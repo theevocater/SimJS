@@ -99,7 +99,6 @@ function start() {
 
 function add() {
   actors.push(new Ball());
-  console.log(actors.length);
 
   if (actors.length === 1) {
     pause();

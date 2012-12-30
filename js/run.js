@@ -52,8 +52,11 @@ function actBall() {
 }
 
 function run() {
-  if (!running || actors.length == 0) {
-    drawPause();
+  if (!running) {
+    return;
+  }
+  if (actors.length == 0) {
+    pause();
     return;
   }
 
@@ -97,14 +100,14 @@ function add() {
   console.log(actors.length);
 
   if (actors.length == 1)
-    run();
+    pause();
 }
 
 $(document).ready(function() {
   $("#pause").click(pause);
   $("#add_ball").click(add);
   screen = new Screen($("#myCanvas")[0]);
-  pause();
+  run();
 });
 
 // TODO exception function

@@ -1,4 +1,3 @@
-// defaults
 function Screen(canvas) {
   // need to blow up here.
   this.canvas = canvas || console.log("warn: unable to init canvas");
@@ -14,7 +13,7 @@ var screen = null;
 
 var actors = [];
 
-var running = false;
+var running = true;
 
 function Ball(x, y, radius, xa, ya, color) {
   this.radius = radius || 15;
@@ -53,8 +52,11 @@ function actBall() {
 }
 
 function run() {
-  if (!running || actors.length == 0)
+  if (!running || actors.length == 0) {
+    drawPause();
     return;
+  }
+
   var cxt = screen.canvas.getContext("2d");
   screen.clear(cxt);
   for (var i = 0; i < actors.length; i++) {
@@ -71,8 +73,23 @@ function start() {
   }
 }
 
-function stop() {
-  running = false;
+function drawPause() {
+  var cxt = screen.canvas.getContext("2d");
+  cxt.fillStyle="#000000";
+  cxt.fillRect(screen.width/4.0, screen.height/4.0, screen.width/6.0, screen.height/2.0);
+  cxt.fillRect(7.0*screen.width/12.0, screen.height/4.0, screen.width/6.0, screen.height/2.0);
+}
+
+function pause() {
+  if (running) {
+    running = false;
+    $("#pause").attr("value", "Play")
+    drawPause()
+  } else {
+    running = true;
+    $("#pause").attr("value", "Pause")
+    run();
+  }
 }
 
 function add() {
@@ -84,10 +101,10 @@ function add() {
 }
 
 $(document).ready(function() {
-  $("#start").click(start);
-  $("#stop").click(stop);
+  $("#pause").click(pause);
   $("#add_ball").click(add);
   screen = new Screen($("#myCanvas")[0]);
+  pause();
 });
 
 // TODO exception function

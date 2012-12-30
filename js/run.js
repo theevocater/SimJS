@@ -3,8 +3,10 @@
 function Screen(canvas) {
   // need to blow up here.
   this.canvas = canvas || console.log("warn: unable to init canvas");
-  this.height = 768;
-  this.width = 1024;
+  this.height = 600;
+  this.width = 600;
+  this.canvas.width = this.width;
+  this.canvas.height = this.height;
   this.clear = function (cxt) {
     cxt.fillStyle = "#FFFFFF";
     cxt.fillRect(0, 0, this.width, this.height);

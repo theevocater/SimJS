@@ -4,11 +4,15 @@ function Screen(canvas) {
   this.canvas = canvas || console.log("warn: unable to init canvas");
   this.height = 768;
   this.width = 1024;
+  this.clear = function (cxt) {
+    cxt.fillStyle="#FFFFFF";
+    cxt.fillRect(0, 0, screen.width, screen.height);
+  }
 }
 
 var screen = null;
 
-var ball = new Ball();
+var actors = [];
 
 var running = false;
 
@@ -29,8 +33,6 @@ function Ball(x, y, radius, xa, ya, color) {
 
 // takes in a canvas context
 function drawBall(cxt) {
-  cxt.fillStyle="#FFFFFF";
-  cxt.fillRect(0, 0, screen.width, screen.height);
   cxt.fillStyle = this.color;
   cxt.beginPath();
   // a circle is an arc from 0 to 2Pi
@@ -51,11 +53,14 @@ function actBall() {
 }
 
 function run() {
-  if (!running)
+  if (!running || actors.length == 0)
     return;
   var cxt = screen.canvas.getContext("2d");
-  ball.draw(cxt);
-  ball.act();
+  screen.clear(cxt);
+  for (var i = 0; i < actors.length; i++) {
+    actors[i].draw(cxt);
+    actors[i].act();
+  }
   t = setTimeout('run()', 16);
 }
 
@@ -71,8 +76,11 @@ function stop() {
 }
 
 function add() {
+  actors.push(new Ball());
+  console.log(actors.length);
 
-
+  if (actors.length == 1)
+    run();
 }
 
 $(document).ready(function() {

@@ -19,7 +19,9 @@ var actors = [];
 
 var running = true;
 
-// takes in a canvas context
+function randomDelta() {
+  return Math.random() * 2 - 1;
+}
 
 function Ball(x, y, radius, xa, ya, color) {
   this.radius = radius || 15;
@@ -27,8 +29,8 @@ function Ball(x, y, radius, xa, ya, color) {
   this.x = x || 15;
   this.y = y || 15;
 
-  this.xa = xa || 2;
-  this.ya = ya || 2;
+  this.xa = xa || 2 + randomDelta();
+  this.ya = ya || 2 + randomDelta();
   this.color = color || "#000000";
 
   this.draw = function (cxt) {

@@ -76,13 +76,12 @@ function run() {
   if (!running) {
     return;
   }
+  cxt = screen.canvas.getContext("2d");
+  screen.clear(cxt);
   if (actors.length === 0) {
     pause();
     return;
   }
-
-  cxt = screen.canvas.getContext("2d");
-  screen.clear(cxt);
   for (i = 0; i < actors.length; i += 1) {
     actors[i].draw(cxt);
     actors[i].act();
@@ -105,9 +104,14 @@ function add() {
   }
 }
 
+function clear() {
+  actors = [];
+}
+
 $(document).ready(function () {
   $("#pause").click(pause);
   $("#add_ball").click(add);
+  $("#clear").click(clear);
   screen = new Screen($("#myCanvas")[0]);
   run();
 });

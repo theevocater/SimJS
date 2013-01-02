@@ -1,5 +1,14 @@
 "use strict";
 
+// globals
+var screen = null;
+
+var log = null;
+
+var actors = [];
+
+var running = true;
+
 function Screen(canvas) {
   // need to blow up here.
   this.canvas = canvas || console.log("warn: unable to init canvas");
@@ -12,12 +21,6 @@ function Screen(canvas) {
     cxt.fillRect(0, 0, this.width, this.height);
   };
 }
-
-var screen = null;
-
-var actors = [];
-
-var running = true;
 
 function randomDelta() {
   return Math.random() * 4 - 2;
@@ -156,20 +159,23 @@ $(document).ready(function () {
   $("#clear").click(clear);
   $("canvas").click(canvasClick);
   screen = new Screen($("#myCanvas")[0]);
+  log = new Log($("#log"));
   run();
 });
 
 // TODO
-// also, we should probably programatically add the logging element somehow
-// and move it to an object
-// and move it to another file
-function log(text) {
-  var newLog = $(document.createElement("p")).text(text).addClass("log");
-  $("#log").append(newLog);
-}
+// we should probably programatically add the logging element somehow 
+// if there isn't one passed in
+// move it to another file
+function Log(logElem) {
+  this.logElem = logElem;
+  this.log = function (text) {
+    var newLog = $(document.createElement("p")).text(text).addClass("log");
+    this.logElem.append(newLog);
+  }
 
-function clearLog() {
-  $("#log").html("")
+  this.clearLog = function () {
+    this.logElem.html("")
+  }
 }
-
 // TODO exception function

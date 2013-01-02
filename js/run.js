@@ -159,12 +159,13 @@ $(document).ready(function () {
   run();
 });
 
-// TODO make this not embed markup
+// TODO
 // also, we should probably programatically add the logging element somehow
 // and move it to an object
 // and move it to another file
 function log(text) {
-  $("#log").html($("#log").html() + "<p>" + text + "</p>")
+  var newLog = $(document.createElement("p")).text(text).addClass("log");
+  $("#log").append(newLog);
 }
 
 function clearLog() {

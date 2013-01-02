@@ -110,6 +110,7 @@ function add() {
 
 function clear() {
   actors = [];
+  clearLog();
 }
 
 $(document).ready(function () {
@@ -119,5 +120,17 @@ $(document).ready(function () {
   screen = new Screen($("#myCanvas")[0]);
   run();
 });
+
+// TODO make this not embed markup
+// also, we should probably programatically add the logging element somehow
+// and move it to an object
+// and move it to another file
+function log(text) {
+  $("#log").html($("#log").html() + "<p>" + text + "</p>")
+}
+
+function clearLog() {
+  $("#log").html("")
+}
 
 // TODO exception function

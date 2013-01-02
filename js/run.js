@@ -86,10 +86,10 @@ function run() {
     pause();
     return;
   }
-  for (i = 0; i < actors.length; i += 1) {
-    actors[i].draw(cxt);
-    actors[i].act();
-  }
+  _.each(actors, function (element) {
+    element.draw(cxt);
+    element.act();
+  })
   setTimeout(run, 16);
 }
 

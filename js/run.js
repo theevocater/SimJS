@@ -20,7 +20,7 @@ var actors = [];
 var running = true;
 
 function randomDelta() {
-  return Math.random() * 2 - 1;
+  return Math.random() * 4 - 2;
 }
 
 function Ball(x, y, radius, xa, ya, color) {
@@ -29,8 +29,23 @@ function Ball(x, y, radius, xa, ya, color) {
   this.x = x || 15;
   this.y = y || 15;
 
-  this.xa = xa || 2 + randomDelta();
-  this.ya = ya || 2 + randomDelta();
+  if (this.x < 0 + this.radius) {
+    this.x = this.radius;
+  }
+  if (this.x > screen.width - this.radius) {
+    this.x = screen.width - this.radius;
+  }
+
+  if (this.y < 0 + this.radius) {
+    this.y = this.radius;
+  }
+  if (this.y > screen.height - this.radius) {
+    this.y = screen.height - this.radius;
+  }
+  //log(x + "," + y);
+
+  this.xa = xa || randomDelta();
+  this.ya = ya || randomDelta();
   this.color = color || "#000000";
 
   this.draw = function (cxt) {
@@ -46,12 +61,23 @@ function Ball(x, y, radius, xa, ya, color) {
     this.x = this.x + this.xa;
     this.y = this.y + this.ya;
 
-    if (this.x < 0 + this.radius || this.x > screen.width - this.radius) {
-      this.xa = -this.xa;
+    // TODO hack until we do collisions correctly
+    if (this.x < 0 + this.radius) {
+      this.x = this.radius;
+      this.xa = Math.abs(this.xa);
+    }
+    if (this.x > screen.width - this.radius) {
+      this.x = screen.width - this.radius;
+      this.xa = -Math.abs(this.xa);
     }
 
-    if (this.y < 0 + this.radius || this.y > screen.height - this.radius) {
-      this.ya = -this.ya;
+    if (this.y < 0 + this.radius) {
+      this.y = this.radius;
+      this.ya = Math.abs(this.ya);
+    }
+    if (this.y > screen.height - this.radius) {
+      this.y = screen.height - this.radius;
+      this.ya = -Math.abs(this.ya);
     }
   };
 }
@@ -100,8 +126,19 @@ function start() {
   }
 }
 
-function add() {
-  actors.push(new Ball());
+function canvasClick(e) {
+  var x = e.pageX - this.offsetLeft;
+  var y = e.pageY - this.offsetTop;
+  log(x + "," + y)
+  add(x,y)
+}
+
+function addButton(e) {
+  add();
+}
+
+function add(x, y) {
+  actors.push(new Ball(x,y));
 
   if (actors.length === 1) {
     pause();
@@ -115,8 +152,9 @@ function clear() {
 
 $(document).ready(function () {
   $("#pause").click(pause);
-  $("#add_ball").click(add);
+  $("#add_ball").click(addButton);
   $("#clear").click(clear);
+  $("canvas").click(canvasClick);
   screen = new Screen($("#myCanvas")[0]);
   run();
 });

@@ -132,7 +132,7 @@ function start() {
 function canvasClick(e) {
   var x = e.pageX - this.offsetLeft;
   var y = e.pageY - this.offsetTop;
-  log(x + "," + y)
+  log.log(x + "," + y)
   add(x,y)
 }
 
@@ -150,7 +150,7 @@ function add(x, y) {
 
 function clear() {
   actors = [];
-  clearLog();
+  log.clearLog();
 }
 
 $(document).ready(function () {

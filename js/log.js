@@ -9,6 +9,6 @@ function Log(logElem) {
   }
 
   this.clearLog = function () {
-    this.logElem.html("")
+    this.logElem.empty();
   }
 }

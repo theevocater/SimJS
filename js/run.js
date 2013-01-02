@@ -17,6 +17,7 @@ function Screen(canvas) {
   this.canvas.width = this.width;
   this.canvas.height = this.height;
   this.clear = function (cxt) {
+    cxt = cxt || screen.canvas.getContext("2d");
     cxt.fillStyle = "#FFFFFF";
     cxt.fillRect(0, 0, this.width, this.height);
   };
@@ -91,6 +92,7 @@ function add(x, y) {
 
 function clear() {
   actors = [];
+  screen.clear();
   log.clearLog();
 }
 

@@ -39,8 +39,8 @@ function Screen(canvas) {
     for (i = 0; i < this.height/this.grid_height; i++) {
       cxt.strokeStyle = "#000000";
       cxt.beginPath();
-      cxt.moveTo(0, i*this.);
-      cxt.l(this.width, i*this.grid_height);
+      cxt.moveTo(0, i*this.grid_height);
+      cxt.lineTo(this.width, i*this.grid_height);
       cxt.closePath();
       cxt.stroke();
     }
@@ -93,10 +93,10 @@ function start() {
 }
 
 function canvasClick(e) {
-  var x = e.pageX - this.offsetLeft;
-  var y = e.pageY - this.offsetTop;
+  var x = Math.floor((e.pageX - this.offsetLeft)/screen.grid_width);
+  var y = Math.floor((e.pageY - this.offsetTop)/screen.grid_height);
   log.log(x + "," + y)
-  add(x,y)
+  add(x,y);
 }
 
 function addButton(e) {

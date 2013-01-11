@@ -39,8 +39,8 @@ function Screen(canvas) {
     for (i = 0; i < this.height/this.grid_height; i++) {
       cxt.strokeStyle = "#000000";
       cxt.beginPath();
-      cxt.moveTo(0, i*this.grid_height);
-      cxt.lineTo(this.width, i*this.grid_height);
+      cxt.moveTo(0, i*this.);
+      cxt.l(this.width, i*this.grid_height);
       cxt.closePath();
       cxt.stroke();
     }
@@ -52,10 +52,6 @@ function Screen(canvas) {
     cxt.fillRect(screen.width / 4.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
     cxt.fillRect(7.0 * screen.width / 12.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
   }
-}
-
-function randomDelta() {
-  return Math.random() * 4 - 2;
 }
 
 function pause() {

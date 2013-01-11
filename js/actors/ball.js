@@ -1,10 +1,14 @@
 "use strict";
 
-function Ball(x, y, radius, xa, ya, color) {
-  this.radius = radius || 15;
+function randomDelta() {
+  return Math.random() * 4 - 2;
+}
 
-  this.x = x || 15;
-  this.y = y || 15;
+function Ball(x, y, radius, xa, ya, color) {
+  this.radius = radius || 16;
+
+  this.x = x || radius;
+  this.y = y || radius;
 
   if (this.x < 0 + this.radius) {
     this.x = this.radius;
@@ -19,7 +23,6 @@ function Ball(x, y, radius, xa, ya, color) {
   if (this.y > screen.height - this.radius) {
     this.y = screen.height - this.radius;
   }
-  //log(x + "," + y);
 
   this.xa = xa || randomDelta();
   this.ya = ya || randomDelta();

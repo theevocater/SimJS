@@ -12,14 +12,38 @@ var running = true;
 function Screen(canvas) {
   // need to blow up here.
   this.canvas = canvas || console.log("warn: unable to init canvas");
-  this.height = 600;
-  this.width = 600;
+  this.grid_height = 32;
+  this.grid_width = 32;
+  this.width = this.grid_width*16+1;
+  this.height = this.grid_height*16+1;
   this.canvas.width = this.width;
   this.canvas.height = this.height;
   this.clear = function (cxt) {
     cxt = cxt || screen.canvas.getContext("2d");
     cxt.fillStyle = "#FFFFFF";
     cxt.fillRect(0, 0, this.width, this.height);
+  };
+
+  this.grid = function (cxt) {
+    var i;
+    cxt = cxt || screen.canvas.getContext("2d");
+    for (i = 0; i < this.width/this.grid_width; i++) {
+      cxt.strokeStyle = "#000000";
+      cxt.beginPath();
+      cxt.moveTo(i*this.grid_width,0);
+      cxt.lineTo(i*this.grid_width, this.height);
+      cxt.closePath();
+      cxt.stroke();
+    }
+
+    for (i = 0; i < this.height/this.grid_height; i++) {
+      cxt.strokeStyle = "#000000";
+      cxt.beginPath();
+      cxt.moveTo(0, i*this.grid_height);
+      cxt.lineTo(this.width, i*this.grid_height);
+      cxt.closePath();
+      cxt.stroke();
+    }
   };
 
   this.pause = function () {
@@ -53,6 +77,7 @@ function run() {
   }
   cxt = screen.canvas.getContext("2d");
   screen.clear(cxt);
+  screen.grid(cxt);
   if (actors.length === 0) {
     pause();
     return;

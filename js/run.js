@@ -5,6 +5,9 @@ var screen = null;
 
 var log = null;
 
+// yeah.
+var superUniqueUUID = 0;
+
 var actors = [];
 
 var running = true;
@@ -12,10 +15,10 @@ var running = true;
 function Screen(canvas) {
   // need to blow up here.
   this.canvas = canvas || console.log("warn: unable to init canvas");
-  this.grid_height = 32;
-  this.grid_width = 32;
+  this.grid_height = 64;
+  this.grid_width = 64;
   this.cols = 16;
-  this.rows = 16;
+  this.rows = 10;
   this.width = this.grid_width * this.cols + 0;
   this.height = this.grid_height * this.rows + 0;
   this.canvas.width = this.width;
@@ -54,6 +57,10 @@ function Screen(canvas) {
     cxt.fillRect(screen.width / 4.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
     cxt.fillRect(7.0 * screen.width / 12.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
   };
+
+  this.getContext = function () {
+    return screen.canvas.getContext("2d");
+  };
 }
 
 function pause() {
@@ -79,7 +86,8 @@ function run() {
   if (!running) {
     return;
   }
-  cxt = screen.canvas.getContext("2d");
+  cxt = screen.getContext();
+  log.clearLog();
   screen.clear(cxt);
   screen.grid(cxt);
   if (actors.length === 0) {
@@ -88,14 +96,15 @@ function run() {
   }
 
   _.each(actors, function (element) {
+    element.draw(cxt);
+  });
+
+  _.each(actors, function (element) {
     element.act();
     if (detectCollision(element)) {
       element.rewind();
     }
-  });
-
-  _.each(actors, function (element) {
-    element.draw(cxt);
+    log.log(element.id + ": " + element.x + " " + element.y);
   });
 
   setTimeout(run, 100);
@@ -119,11 +128,15 @@ function addButton(e) {
 }
 
 function add(x, y) {
-  actors.push(new Ball(x,y));
+  actors.push(new Ball(superUniqueUUID, x, y, 32));
+  superUniqueUUID += 1;
   if (detectCollision(_.last(actors))) {
-    actors.pop()
+    actors.pop();
   }
 
+  _.last(actors).draw(screen.getContext());
+
+  // if we added our first actor, unpause
   if (actors.length === 1) {
     pause();
   }

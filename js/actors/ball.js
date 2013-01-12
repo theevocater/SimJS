@@ -5,7 +5,9 @@ function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
 
-function Ball(x, y, radius, color) {
+function Ball(id, x, y, radius, color) {
+  this.id = id;
+
   this.radius = radius || 16;
 
   this.x = x || 0;

@@ -1,6 +1,6 @@
 "use strict";
 
-// n,e,s,w 0,1,2,3
+// @returns [-1,4] -- [NoMove, N, E, S, W]
 function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
@@ -45,6 +45,7 @@ function Ball(x, y, radius, color) {
     switch (randomDirection()) {
       case -1:
         break;
+
       case 0:
         y = y + 1;
       break;

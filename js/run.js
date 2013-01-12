@@ -68,6 +68,12 @@ function pause() {
   }
 }
 
+function detectCollision(element) {
+  return _.reduce(actors, function (memo, other) {
+    return element.collide(other) || memo;
+  }, false);
+}
+
 function run() {
   var i, cxt;
   if (!running) {
@@ -83,6 +89,9 @@ function run() {
 
   _.each(actors, function (element) {
     element.act();
+    if (detectCollision(element)) {
+      element.rewind();
+    }
   });
 
   _.each(actors, function (element) {
@@ -111,6 +120,9 @@ function addButton(e) {
 
 function add(x, y) {
   actors.push(new Ball(x,y));
+  if (detectCollision(_.last(actors))) {
+    actors.pop()
+  }
 
   if (actors.length === 1) {
     pause();

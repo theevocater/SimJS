@@ -11,6 +11,9 @@ function Ball(x, y, radius, color) {
   this.x = x || 0;
   this.y = y || 0;
 
+  this.oldx = x;
+  this.oldy = y;
+
   if (this.x < 0) {
     this.x = 0;
   }
@@ -39,6 +42,15 @@ function Ball(x, y, radius, color) {
     cxt.fill();
   };
 
+  this.collide = function (ball) {
+    return (this != ball && this.x === ball.x && this.y === ball.y);
+  };
+
+  this.rewind = function () {
+    this.x = this.oldx;
+    this.y = this.oldy;
+  };
+
   // remove to fix later
   this.act = function () {
     var x = this.x, y = this.y;
@@ -65,6 +77,8 @@ function Ball(x, y, radius, color) {
 
     // TODO hack until we do collisions correctly
     if (!(x < 0 || x >= screen.cols || y < 0 || y >= screen.rows)) {
+      this.oldx = this.x;
+      this.oldy = this.y;
       this.x = x;
       this.y = y;
     }

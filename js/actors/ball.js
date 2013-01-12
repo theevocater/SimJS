@@ -1,65 +1,72 @@
 "use strict";
 
-function randomDelta() {
-  return Math.random() * 4 - 2;
+// n,e,s,w 0,1,2,3
+function randomDirection() {
+  return Math.floor(Math.random() * 5) - 1;
 }
 
-function Ball(x, y, radius, xa, ya, color) {
+function Ball(x, y, radius, color) {
   this.radius = radius || 16;
 
   this.x = x || 0;
   this.y = y || 0;
 
-  //if (this.x < 0 + this.radius) {
-    //this.x = this.radius;
-  //}
-  //if (this.x > screen.width - this.radius) {
-    //this.x = screen.width - this.radius;
-  //}
+  if (this.x < 0) {
+    this.x = 0;
+  }
+  if (this.x > screen.cols) {
+    this.x = screen.cols;
+  }
 
-  //if (this.y < 0 + this.radius) {
-    //this.y = this.radius;
-  //}
-  //if (this.y > screen.height - this.radius) {
-    //this.y = screen.height - this.radius;
-  //}
+  if (this.y < 0) {
+    this.y = 0;
+  }
+  if (this.y > screen.rows) {
+    this.y = screen.rows;
+  }
 
-  this.xa = xa || randomDelta();
-  this.ya = ya || randomDelta();
   this.color = color || "#000000";
 
   this.draw = function (cxt) {
     cxt.fillStyle = this.color;
     cxt.beginPath();
     // a circle is an arc from 0 to 2Pi
-    cxt.arc(this.x*this.radius*2+this.radius, this.y*this.radius*2+this.radius, this.radius, 0, Math.PI * 2, true);
+    cxt.arc(this.x * this.radius * 2 + this.radius,
+            this.y * this.radius * 2 + this.radius,
+            this.radius, 0, Math.PI * 2, true);
+
     cxt.closePath();
     cxt.fill();
   };
 
   // remove to fix later
   this.act = function () {
-    //this.x = this.x + this.xa;
-    //this.y = this.y + this.ya;
+    var x = this.x, y = this.y;
+    switch (randomDirection()) {
+      case -1:
+        break;
+      case 0:
+        y = y + 1;
+      break;
 
-    //// TODO hack until we do collisions correctly
-    //if (this.x < 0 + this.radius) {
-      //this.x = this.radius;
-      //this.xa = Math.abs(this.xa);
-    //}
-    //if (this.x > screen.width - this.radius) {
-      //this.x = screen.width - this.radius;
-      //this.xa = -Math.abs(this.xa);
-    //}
+      case 1:
+        x = x + 1;
+      break;
 
-    //if (this.y < 0 + this.radius) {
-      //this.y = this.radius;
-      //this.ya = Math.abs(this.ya);
-    //}
-    //if (this.y > screen.height - this.radius) {
-      //this.y = screen.height - this.radius;
-      //this.ya = -Math.abs(this.ya);
-    //}
+      case 2:
+        y = y - 1;
+      break;
+
+      case 3:
+        x = x - 1;
+      break;
+    }
+
+    // TODO hack until we do collisions correctly
+    if (!(x < 0 || x >= screen.cols || y < 0 || y >= screen.rows)) {
+      this.x = x;
+      this.y = y;
+    }
   };
 }
 

@@ -14,8 +14,10 @@ function Screen(canvas) {
   this.canvas = canvas || console.log("warn: unable to init canvas");
   this.grid_height = 32;
   this.grid_width = 32;
-  this.width = this.grid_width*16+1;
-  this.height = this.grid_height*16+1;
+  this.cols = 16;
+  this.rows = 16;
+  this.width = this.grid_width * this.cols + 0;
+  this.height = this.grid_height * this.rows + 0;
   this.canvas.width = this.width;
   this.canvas.height = this.height;
   this.clear = function (cxt) {
@@ -27,20 +29,20 @@ function Screen(canvas) {
   this.grid = function (cxt) {
     var i;
     cxt = cxt || screen.canvas.getContext("2d");
-    for (i = 0; i < this.width/this.grid_width; i++) {
+    for (i = 0; i <= this.cols; i += 1) {
       cxt.strokeStyle = "#000000";
       cxt.beginPath();
-      cxt.moveTo(i*this.grid_width,0);
-      cxt.lineTo(i*this.grid_width, this.height);
+      cxt.moveTo(i * this.grid_width, 0);
+      cxt.lineTo(i * this.grid_width, this.height);
       cxt.closePath();
       cxt.stroke();
     }
 
-    for (i = 0; i < this.height/this.grid_height; i++) {
+    for (i = 0; i <= this.rows; i += 1) {
       cxt.strokeStyle = "#000000";
       cxt.beginPath();
-      cxt.moveTo(0, i*this.grid_height);
-      cxt.lineTo(this.width, i*this.grid_height);
+      cxt.moveTo(0, i * this.grid_height);
+      cxt.lineTo(this.width, i * this.grid_height);
       cxt.closePath();
       cxt.stroke();
     }
@@ -51,7 +53,7 @@ function Screen(canvas) {
     cxt.fillStyle = "#000000";
     cxt.fillRect(screen.width / 4.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
     cxt.fillRect(7.0 * screen.width / 12.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
-  }
+  };
 }
 
 function pause() {
@@ -78,25 +80,30 @@ function run() {
     pause();
     return;
   }
+
+  _.each(actors, function (element) {
+    element.act();
+  });
+
   _.each(actors, function (element) {
     element.draw(cxt);
-    element.act();
-  })
-  setTimeout(run, 16);
+  });
+
+  setTimeout(run, 100);
 }
 
 function start() {
   if (!running) {
     running = true;
-    setTimeout(run, 16);
+    run();
   }
 }
 
 function canvasClick(e) {
-  var x = Math.floor((e.pageX - this.offsetLeft)/screen.grid_width);
-  var y = Math.floor((e.pageY - this.offsetTop)/screen.grid_height);
+  var x = Math.floor((e.pageX - this.offsetLeft) / screen.grid_width);
+  var y = Math.floor((e.pageY - this.offsetTop) / screen.grid_height);
   log.log(x + "," + y)
-  add(x,y);
+  add(x, y);
 }
 
 function addButton(e) {
@@ -113,7 +120,6 @@ function add(x, y) {
 
 function clear() {
   actors = [];
-  screen.clear();
   log.clearLog();
 }
 

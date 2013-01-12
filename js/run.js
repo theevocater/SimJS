@@ -102,7 +102,6 @@ function start() {
 function canvasClick(e) {
   var x = Math.floor((e.pageX - this.offsetLeft) / screen.grid_width);
   var y = Math.floor((e.pageY - this.offsetTop) / screen.grid_height);
-  log.log(x + "," + y)
   add(x, y);
 }
 

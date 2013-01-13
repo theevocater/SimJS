@@ -8,6 +8,8 @@ function Actor(id) {
   };
 
   this.collide = function (actor) {
+    if (this == actor)
+      return false;
     return false;
   };
 

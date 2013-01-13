@@ -5,6 +5,18 @@ function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
 
+function drawCircle(cxt, x, y, radius, color) {
+  cxt.fillStyle = color;
+  cxt.beginPath();
+  // a circle is an arc from 0 to 2Pi
+  cxt.arc(x * radius * 2 + radius,
+          y * radius * 2 + radius,
+          radius, 0, Math.PI * 2, true);
+
+  cxt.closePath();
+  cxt.fill();
+}
+
 function Ball(id, x, y, radius, color) {
   this.id = id;
 
@@ -33,15 +45,7 @@ function Ball(id, x, y, radius, color) {
   this.color = color || "#000000";
 
   this.draw = function (cxt) {
-    cxt.fillStyle = this.color;
-    cxt.beginPath();
-    // a circle is an arc from 0 to 2Pi
-    cxt.arc(this.x * this.radius * 2 + this.radius,
-            this.y * this.radius * 2 + this.radius,
-            this.radius, 0, Math.PI * 2, true);
-
-    cxt.closePath();
-    cxt.fill();
+    drawCircle(cxt, this.x, this.y, this.radius, this.color);
   };
 
   this.collide = function (ball) {

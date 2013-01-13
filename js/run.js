@@ -132,6 +132,7 @@ function add(x, y) {
   superUniqueUUID += 1;
   if (detectCollision(_.last(actors))) {
     actors.pop();
+    return;
   }
 
   _.last(actors).draw(screen.getContext());

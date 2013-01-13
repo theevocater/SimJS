@@ -77,7 +77,11 @@ function pause() {
 
 function detectCollision(element) {
   return _.reduce(actors, function (memo, other) {
-    return element.collide(other) || memo;
+    var collide = element.collide(other);
+    if (collide) {
+      console.log(element.id + " collided with " + other.id);
+    }
+    return collide || memo;
   }, false);
 }
 
@@ -105,6 +109,17 @@ function run() {
       element.rewind();
     }
     log.log(element.id + ": " + element.x + " " + element.y);
+  });
+
+  // checking correctness
+  _.each(actors, function (element) {
+    if (Math.abs(element.x - element.oldX) > 1 || Math.abs(element.y - element.oldY) > 1) {
+      running = false;
+      console.log("x " + element.x);
+      console.log("y " + element.y);
+      console.log("oldX " + element.oldX);
+      console.log("oldY " + element.oldY);
+    }
   });
 
   setTimeout(run, 100);

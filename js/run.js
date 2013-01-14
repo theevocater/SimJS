@@ -109,6 +109,7 @@ function run() {
 
   _.each(actors, function (element) {
     element.draw(cxt);
+    log.log(element.id + ": " + element.x + " " + element.y);
   });
 
   _.each(actors, function (element) {
@@ -116,7 +117,6 @@ function run() {
     if (detectCollision(element)) {
       element.rewind();
     }
-    log.log(element.id + ": " + element.x + " " + element.y);
   });
 
   // check the walls now

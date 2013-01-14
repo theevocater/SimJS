@@ -8,7 +8,7 @@ var log = null;
 // yeah.
 var superUniqueUUID = 0;
 
-function id() {
+function newId() {
   var id = superUniqueUUID;
   superUniqueUUID += 1;
   return id;
@@ -16,7 +16,7 @@ function id() {
 
 var actors = [];
 
-var walls = new SimWalls(id());
+var walls = null;
 
 var running = true;
 
@@ -121,7 +121,7 @@ function run() {
 
   // check the walls now
   _.each(actors, function (element) {
-    if(walls.collide(element)) {
+    if (walls.collide(element)) {
        element.rewind()
     }
   });
@@ -158,7 +158,7 @@ function addButton(e) {
 }
 
 function add(x, y) {
-  actors.push(new Ball(id(), x, y, 32));
+  actors.push(new Ball(newId(), x, y, 32));
 
   if (detectCollision(_.last(actors))) {
     actors.pop();
@@ -184,6 +184,7 @@ $(document).ready(function () {
   $("#clear").click(clear);
   $("canvas").click(canvasClick);
   screen = new Screen($("#myCanvas")[0]);
+  walls = new SimWalls(newId());
 
   // TODO if no log element, replace with donothing logger
   log = new Log($("#log"));

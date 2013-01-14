@@ -1,2 +1,7 @@
-Just a little bouncy ball sim. Super dumb physics, no collisions except with
-walls.
+Making a little tile based game thing.
+
+# TODO #
+* Sprites
+* A player
+* more actors
+* health

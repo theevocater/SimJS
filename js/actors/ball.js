@@ -22,8 +22,8 @@ function Ball(id, x, y, radius, color) {
 
   this.radius = radius || 16;
 
-  this.x = x || 0;
-  this.y = y || 0;
+  this.x = x;
+  this.y = y;
 
   this.oldX = x;
   this.oldY = y;
@@ -31,6 +31,7 @@ function Ball(id, x, y, radius, color) {
   if (this.x < 0) {
     this.x = 0;
   }
+
   if (this.x > screen.cols) {
     this.x = screen.cols;
   }
@@ -49,7 +50,7 @@ function Ball(id, x, y, radius, color) {
   };
 
   this.collide = function (actor) {
-    return this != actor && this.x === actor.x && this.y === actor.y;
+    return defaultCollision(this, actor);
   };
 
   this.rewind = function () {

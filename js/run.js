@@ -122,7 +122,7 @@ function run() {
   // check the walls now
   _.each(actors, function (element) {
     if (walls.collide(element)) {
-       element.rewind()
+      element.rewind()
     }
   });
 
@@ -153,12 +153,22 @@ function canvasClick(e) {
   add(x, y);
 }
 
-function addButton(e) {
-  add();
+var adder = null;
+
+function addBall(e) {
+  adder = function (id, x, y) {
+    return new Ball(id, x, y, screen.grid_height / 2);
+  }
+}
+
+function addWall(e) {
+  adder = function (id, x, y) {
+    return new Wall(id, x, y, screen.grid_width, screen.grid_height);
+  }
 }
 
 function add(x, y) {
-  actors.push(new Ball(newId(), x, y, 32));
+  actors.push(adder(newId(), x, y));
 
   if (detectCollision(_.last(actors))) {
     actors.pop();
@@ -180,11 +190,13 @@ function clear() {
 
 $(document).ready(function () {
   $("#pause").click(pause);
-  $("#add_ball").click(addButton);
+  $("#add_ball").click(addBall);
+  $("#add_wall").click(addWall);
   $("#clear").click(clear);
   $("canvas").click(canvasClick);
   screen = new Screen($("#myCanvas")[0]);
   walls = new SimWalls(newId());
+  addBall();
 
   // TODO if no log element, replace with donothing logger
   log = new Log($("#log"));

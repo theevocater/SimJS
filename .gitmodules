@@ -1,0 +1,3 @@
+[submodule "js/keyboardjs"]
+	path = js/keyboardjs
+	url = git://github.com/RobertWHurst/KeyboardJS.git

@@ -25,8 +25,8 @@ function Ball(id, x, y, radius, color) {
   this.x = x || 0;
   this.y = y || 0;
 
-  this.oldx = x;
-  this.oldy = y;
+  this.oldX = x;
+  this.oldY = y;
 
   if (this.x < 0) {
     this.x = 0;
@@ -48,45 +48,38 @@ function Ball(id, x, y, radius, color) {
     drawCircle(cxt, this.x, this.y, this.radius, this.color);
   };
 
-  this.collide = function (ball) {
-    return (this != ball && this.x === ball.x && this.y === ball.y);
+  this.collide = function (actor) {
+    return this != actor && this.x === actor.x && this.y === actor.y;
   };
 
   this.rewind = function () {
-    this.x = this.oldx;
-    this.y = this.oldy;
+    this.x = this.oldX;
+    this.y = this.oldY;
   };
 
   // remove to fix later
   this.act = function () {
-    var x = this.x, y = this.y;
+    this.oldX = this.x;
+    this.oldY = this.y;
     switch (randomDirection()) {
       case -1:
         break;
 
       case 0:
-        y = y + 1;
+        this.y = this.y + 1;
       break;
 
       case 1:
-        x = x + 1;
+        this.x = this.x + 1;
       break;
 
       case 2:
-        y = y - 1;
+        this.y = this.y - 1;
       break;
 
       case 3:
-        x = x - 1;
+        this.x = this.x - 1;
       break;
-    }
-
-    // TODO hack until we do collisions correctly
-    if (!(x < 0 || x >= screen.cols || y < 0 || y >= screen.rows)) {
-      this.oldx = this.x;
-      this.oldy = this.y;
-      this.x = x;
-      this.y = y;
     }
   };
 }

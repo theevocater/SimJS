@@ -16,6 +16,8 @@ function id() {
 
 var actors = [];
 
+var walls = new SimWalls(id());
+
 var running = true;
 
 function Screen(canvas) {
@@ -117,6 +119,13 @@ function run() {
     log.log(element.id + ": " + element.x + " " + element.y);
   });
 
+  // check the walls now
+  _.each(actors, function (element) {
+    if(walls.collide(element)) {
+       element.rewind()
+    }
+  });
+
   // checking correctness
   _.each(actors, function (element) {
     if (Math.abs(element.x - element.oldX) > 1 || Math.abs(element.y - element.oldY) > 1) {
@@ -175,6 +184,7 @@ $(document).ready(function () {
   $("#clear").click(clear);
   $("canvas").click(canvasClick);
   screen = new Screen($("#myCanvas")[0]);
+
   // TODO if no log element, replace with donothing logger
   log = new Log($("#log"));
   run();

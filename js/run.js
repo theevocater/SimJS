@@ -16,6 +16,8 @@ function newId() {
 
 var actors = [];
 
+var player = null;
+
 var walls = null;
 
 var running = true;
@@ -93,11 +95,14 @@ function detectCollision(element) {
   }, false);
 }
 
+var time = 0;
+
 function run() {
-  var i, cxt;
+  var i, cxt, currTime;
   if (!running) {
     return;
   }
+
   cxt = screen.getContext();
   log.clearLog();
   screen.clear(cxt);
@@ -112,32 +117,36 @@ function run() {
     log.log(element.id + ": " + element.x + " " + element.y);
   });
 
-  _.each(actors, function (element) {
-    element.act();
-    if (detectCollision(element)) {
-      element.rewind();
-    }
-  });
+  currTime = Date.now();
+  if (currTime - time > 500) {
+    _.each(actors, function (element) {
+      element.act();
+      if (detectCollision(element)) {
+        element.rewind();
+      }
+    });
 
-  // check the walls now
-  _.each(actors, function (element) {
-    if (walls.collide(element)) {
-      element.rewind()
-    }
-  });
+    // check the walls now
+    _.each(actors, function (element) {
+      if (walls.collide(element)) {
+        element.rewind()
+      }
+    });
+    time = Date.now();
+  }
 
   // checking correctness
-  _.each(actors, function (element) {
-    if (Math.abs(element.x - element.oldX) > 1 || Math.abs(element.y - element.oldY) > 1) {
-      running = false;
-      console.log("x " + element.x);
-      console.log("y " + element.y);
-      console.log("oldX " + element.oldX);
-      console.log("oldY " + element.oldY);
-    }
-  });
+  //_.each(actors, function (element) {
+    //if (Math.abs(element.x - element.oldX) > 1 || Math.abs(element.y - element.oldY) > 1) {
+      //running = false;
+      //console.log("x " + element.x);
+      //console.log("y " + element.y);
+      //console.log("oldX " + element.oldX);
+      //console.log("oldY " + element.oldY);
+    //}
+  //});
 
-  setTimeout(run, 100);
+  setTimeout(run, 16);
 }
 
 function start() {
@@ -188,18 +197,53 @@ function clear() {
   log.clearLog();
 }
 
+function moved() {
+  if(detectCollision(player) || walls.collide(player)) {
+    player.rewind();
+    return;
+  }
+}
+
 $(document).ready(function () {
+  // set up buttons
   $("#pause").click(pause);
   $("#add_ball").click(addBall);
   $("#add_wall").click(addWall);
+  // set up default to addBall
+  addBall();
   $("#clear").click(clear);
   $("canvas").click(canvasClick);
+
+  // set up game world
   screen = new Screen($("#myCanvas")[0]);
   walls = new SimWalls(newId());
-  addBall();
 
+  player = new Player(newId(), 0, 0, screen.grid_height / 2, "red");
+  actors.push(player);
+
+  KeyboardJS.on("w", function () {
+    player.up();
+    moved();
+  });
+
+  KeyboardJS.on("s", function () {
+    player.down();
+    moved();
+  });
+
+  KeyboardJS.on("a", function () {
+    player.left();
+    moved();
+  });
+
+  KeyboardJS.on("d", function () {
+    player.right();
+    moved();
+  });
   // TODO if no log element, replace with donothing logger
   log = new Log($("#log"));
+
+  // start simulation
   run();
 });
 

@@ -95,11 +95,14 @@ function detectCollision(element) {
   }, false);
 }
 
+var time = 0;
+
 function run() {
-  var i, cxt;
+  var i, cxt, currTime;
   if (!running) {
     return;
   }
+
   cxt = screen.getContext();
   log.clearLog();
   screen.clear(cxt);
@@ -114,19 +117,23 @@ function run() {
     log.log(element.id + ": " + element.x + " " + element.y);
   });
 
-  _.each(actors, function (element) {
-    element.act();
-    if (detectCollision(element)) {
-      element.rewind();
-    }
-  });
+  currTime = Date.now();
+  if (currTime - time > 500) {
+    _.each(actors, function (element) {
+      element.act();
+      if (detectCollision(element)) {
+        element.rewind();
+      }
+    });
 
-  // check the walls now
-  _.each(actors, function (element) {
-    if (walls.collide(element)) {
-      element.rewind()
-    }
-  });
+    // check the walls now
+    _.each(actors, function (element) {
+      if (walls.collide(element)) {
+        element.rewind()
+      }
+    });
+    time = Date.now();
+  }
 
   // checking correctness
   //_.each(actors, function (element) {

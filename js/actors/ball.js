@@ -5,6 +5,8 @@ function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
 
+// TODO: move this to another file
+// possibly add to prototype of 2d context?
 function drawCircle(cxt, x, y, radius, color) {
   cxt.fillStyle = color;
   cxt.beginPath();
@@ -27,6 +29,11 @@ function Ball(id, x, y, radius, color) {
 
   this.oldX = x;
   this.oldY = y;
+
+  // in ms
+  this.actInterval = 1000;
+
+  this.acted = Date.now();
 
   if (this.x < 0) {
     this.x = 0;
@@ -58,8 +65,11 @@ function Ball(id, x, y, radius, color) {
     this.y = this.oldY;
   };
 
-  // remove to fix later
-  this.act = function () {
+  this.act = function (time) {
+    if ((time - this.acted) < this.actInterval) {
+      return;
+    }
+    this.acted = time;
     this.oldX = this.x;
     this.oldY = this.y;
     switch (randomDirection()) {

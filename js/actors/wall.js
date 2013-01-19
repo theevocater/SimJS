@@ -26,7 +26,7 @@ function Wall(id, x, y, width, height, color) {
   };
 
   // walls don't do anything
-  this.act = function () {
+  this.act = function (time) {
   };
 }
 

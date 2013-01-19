@@ -59,7 +59,10 @@ function Player(id, x, y, radius, color) {
   };
 
   // the player doesn't take automatic actions
-  this.act = function () {
+  // TODO maybe we want to queue actions that the player is taking? Or
+  // something anyway. We only draw every 16ms, so the player can move faster
+  // than the framerate which is ~~
+  this.act = function (time) {
   };
 
   this.left = function () {

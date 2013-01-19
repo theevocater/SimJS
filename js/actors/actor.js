@@ -18,7 +18,7 @@ function Actor(id) {
   this.rewind = function () {
   };
 
-  this.act = function () {
+  this.act = function (time) {
   };
 }
 

@@ -5,16 +5,34 @@ function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
 
-function drawCircle(cxt, x, y, radius, color) {
-  cxt.fillStyle = color;
+function drawPlayer(cxt, x, y, radius, color) {
+  cxt.strokeStyle = color;
   cxt.beginPath();
   // a circle is an arc from 0 to 2Pi
-  cxt.arc(x * radius * 2 + radius,
-          y * radius * 2 + radius,
-          radius, 0, Math.PI * 2, true);
+  var realX = x * radius * 2;
+  var realY = y * radius * 2;
+  cxt.arc(realX + radius,
+          realY + radius * .35,
+          radius * .35, 0, Math.PI * 2, true);
+
+  // body
+  cxt.moveTo(realX + radius, realY + radius * .35 * 2);
+  cxt.lineTo(realX + radius, realY + radius + radius * .35);
+  // left arm
+  cxt.moveTo(realX + radius, realY + radius);
+  cxt.lineTo(realX + radius - radius * .35, realY + radius - radius * .35);
+  // right arm
+  cxt.moveTo(realX + radius, realY + radius);
+  cxt.lineTo(realX + radius + radius * .35, realY + radius - radius * .35);
+  // left leg
+  cxt.moveTo(realX + radius, realY + radius + radius * .35);
+  cxt.lineTo(realX + radius - radius * .35, realY + radius * 2);
+  // right leg
+  cxt.moveTo(realX + radius, realY + radius + radius * .35);
+  cxt.lineTo(realX + radius + radius * .35, realY + radius * 2);
 
   cxt.closePath();
-  cxt.fill();
+  cxt.stroke();
 }
 
 function Player(id, x, y, radius, color) {
@@ -46,7 +64,7 @@ function Player(id, x, y, radius, color) {
   this.color = color || "#000000";
 
   this.draw = function (cxt) {
-    drawCircle(cxt, this.x, this.y, this.radius, this.color);
+    drawPlayer(cxt, this.x , this.y, this.radius, this.color);
   };
 
   this.collide = function (actor) {

@@ -216,7 +216,7 @@ $(document).ready(function () {
   screen = new Screen($("#myCanvas")[0]);
   walls = new SimWalls(newId());
 
-  player = new Player(newId(), 0, 0, screen.grid_height / 2, "red");
+  player = new Player(newId(), 0, 0, screen.grid_height / 2, "black");
   actors.push(player);
 
   KeyboardJS.on("w", function () {

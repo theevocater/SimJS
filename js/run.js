@@ -191,7 +191,7 @@ function add(x, y) {
 }
 
 function clear() {
-  actors = [];
+  actors = [player];
   log.clearLog();
 }
 

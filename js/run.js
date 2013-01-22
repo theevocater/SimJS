@@ -25,10 +25,10 @@ var running = true;
 function Screen(canvas) {
   // need to blow up here.
   this.canvas = canvas || console.log("warn: unable to init canvas");
-  this.grid_height = 64;
-  this.grid_width = 64;
-  this.cols = 16;
-  this.rows = 10;
+  this.grid_height = 32;
+  this.grid_width = 32;
+  this.cols = 32;
+  this.rows = 20;
   this.width = this.grid_width * this.cols + 0;
   this.height = this.grid_height * this.rows + 0;
   this.canvas.width = this.width;
@@ -216,7 +216,9 @@ $(document).ready(function () {
   screen = new Screen($("#myCanvas")[0]);
   walls = new SimWalls(newId());
 
-  player = new Player(newId(), 0, 0, screen.grid_height / 2, "black");
+  player = new Player(newId(), 0, 0,
+                      screen.grid_height, screen.grid_width,
+                      "/sprites/cats.png");
   actors.push(player);
 
   KeyboardJS.on("w", function () {

@@ -5,43 +5,22 @@ function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
 
-function drawPlayer(cxt, x, y, radius, color) {
-  cxt.strokeStyle = color;
-  cxt.beginPath();
-  // a circle is an arc from 0 to 2Pi
-  var realX = x * radius * 2;
-  var realY = y * radius * 2;
-  cxt.arc(realX + radius,
-          realY + radius * .35,
-          radius * .35, 0, Math.PI * 2, true);
+function drawPlayer(cxt, image, x, y, height, width) {
 
-  // body
-  cxt.moveTo(realX + radius, realY + radius * .35 * 2);
-  cxt.lineTo(realX + radius, realY + radius + radius * .35);
-  // left arm
-  cxt.moveTo(realX + radius, realY + radius);
-  cxt.lineTo(realX + radius - radius * .35, realY + radius - radius * .35);
-  // right arm
-  cxt.moveTo(realX + radius, realY + radius);
-  cxt.lineTo(realX + radius + radius * .35, realY + radius - radius * .35);
-  // left leg
-  cxt.moveTo(realX + radius, realY + radius + radius * .35);
-  cxt.lineTo(realX + radius - radius * .35, realY + radius * 2);
-  // right leg
-  cxt.moveTo(realX + radius, realY + radius + radius * .35);
-  cxt.lineTo(realX + radius + radius * .35, realY + radius * 2);
-
-  cxt.closePath();
-  cxt.stroke();
+  cxt.drawImage(image, x*height, y*width, height, width);
 }
 
-function Player(id, x, y, radius, color) {
+function Player(id, x, y, height, width, image) {
   this.id = id;
 
-  this.radius = radius || 16;
+  this.image = new Image();
+  this.image.src = image;
 
   this.x = x;
   this.y = y;
+
+  this.height = height;
+  this.width = width;
 
   this.oldX = x;
   this.oldY = y;
@@ -61,10 +40,8 @@ function Player(id, x, y, radius, color) {
     this.y = screen.rows;
   }
 
-  this.color = color || "#000000";
-
   this.draw = function (cxt) {
-    drawPlayer(cxt, this.x , this.y, this.radius, this.color);
+    drawPlayer(cxt, this.image, this.x, this.y, this.height, this.width);
   };
 
   this.collide = function (actor) {

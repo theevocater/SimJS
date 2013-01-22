@@ -162,9 +162,11 @@ function canvasClick(e) {
 
 var adder = null;
 
-function addBall(e) {
+function addEnemy(e) {
   adder = function (id, x, y) {
-    return new Ball(id, x, y, screen.grid_height / 2);
+    return new Enemy(id, x, y,
+                     screen.grid_height, screen.grid_width,
+                     "/sprites/cats.png");
   }
 }
 
@@ -205,10 +207,10 @@ function moved() {
 $(document).ready(function () {
   // set up buttons
   $("#pause").click(pause);
-  $("#add_ball").click(addBall);
+  $("#add_enemy").click(addEnemy);
   $("#add_wall").click(addWall);
-  // set up default to addBall
-  addBall();
+  // set up default to addEnemy
+  addEnemy();
   $("#clear").click(clear);
   $("canvas").click(canvasClick);
 
@@ -216,9 +218,10 @@ $(document).ready(function () {
   screen = new Screen($("#myCanvas")[0]);
   walls = new SimWalls(newId());
 
+  var num = Math.floor(Math.random() * 2);
   player = new Player(newId(), 0, 0,
                       screen.grid_height, screen.grid_width,
-                      "/sprites/cats.png");
+                      "/sprites/redoctober" + num + ".png");
   actors.push(player);
 
   KeyboardJS.on("w", function () {

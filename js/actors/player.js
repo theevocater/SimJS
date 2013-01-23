@@ -1,15 +1,5 @@
 "use strict";
 
-// @returns [-1,4] -- [NoMove, N, E, S, W]
-function randomDirection() {
-  return Math.floor(Math.random() * 5) - 1;
-}
-
-function drawPlayer(cxt, image, x, y, height, width) {
-
-  cxt.drawImage(image, x*height, y*width, height, width);
-}
-
 function Player(id, x, y, height, width, image) {
   this.id = id;
 
@@ -41,7 +31,8 @@ function Player(id, x, y, height, width, image) {
   }
 
   this.draw = function (cxt) {
-    drawPlayer(cxt, this.image, this.x, this.y, this.height, this.width);
+    cxt.drawImage(this.image, this.x * this.height, this.y * this.width,
+                  this.height, this.width);
   };
 
   this.collide = function (actor) {

@@ -39,9 +39,15 @@ function Screen(canvas) {
     cxt.fillRect(0, 0, this.width, this.height);
   };
 
-  this.grid = function (cxt) {
+  this.drawGrid = function (cxt) {
     var i;
     cxt = cxt || screen.canvas.getContext("2d");
+    for (i = 0; i < this.rows; i += 1) {
+      for (j = 0; j < this.cols; j += 1) {
+        this.grid[i][j].draw(cxt);
+      }
+    }
+
     for (i = 0; i <= this.cols; i += 1) {
       cxt.strokeStyle = "#000000";
       cxt.beginPath();
@@ -60,6 +66,21 @@ function Screen(canvas) {
       cxt.stroke();
     }
   };
+
+  this.grid = [];
+
+  var i,j;
+  for (i = 0; i < this.rows; i += 1) {
+    this.grid.push([]);
+    for (j = 0; j < this.cols; j += 1) {
+      this.grid[i][j] = new Tile(newId(), j, i,
+                                 this.grid_height, this.grid_width, "/sprites/tile.png");
+    }
+  }
+
+  this.put = function (actor) {
+    this.grid[actor.x][actor.y].actor = actor;
+  }
 
   this.pause = function () {
     var cxt = screen.canvas.getContext("2d");
@@ -106,7 +127,7 @@ function run() {
   cxt = screen.getContext();
   log.clearLog();
   screen.clear(cxt);
-  screen.grid(cxt);
+  screen.drawGrid(cxt);
   if (actors.length === 0) {
     pause();
     return;

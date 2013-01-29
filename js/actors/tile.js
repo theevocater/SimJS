@@ -1,24 +1,26 @@
 "use strict";
 
 // takes in grid relative coords
-function Tile(x, y, width, height) {
-  this.x = x;
-  this.y = y;
+function Tile(id, x, y, height, width, image) {
+  var _image = new Image(),
+      _actor = null; // keeps the actor currently at its locale
 
-  this.draw = function (cxt) {
-    cxt.strokeStyle = "#000000";
-    cxt.beginPath();
-    cxt.moveTo(x*width, y*height);
-    cxt.lineTo((x+1)*width, y*height);
-    cxt.lineTo((x+1)*width, (y+1)*height);
-    cxt.lineTo(x*width, (y+1)*height);
-    cxt.lineTo(x*width, y*height);
-    cxt.closePath();
-    cxt.stroke();
-  };
+  _image.src = image;
 
-  this.act = function () {
+  return {
+    draw: function (cxt) {
+      cxt.drawImage(_image, x * height, y * width,
+                    height, width);
+    },
 
-  };
+    rewind: function () {
+    },
+
+    collide: function(actor) {
+    },
+
+    act: function (time) {
+    },
+  }
 }
 

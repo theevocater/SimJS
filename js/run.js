@@ -89,7 +89,7 @@ function detectCollision(element) {
   return _.reduce(actors, function (memo, other) {
     var collide = element.collide(other);
     if (collide) {
-      console.log(element.id + " collided with " + other.id);
+      console.log(element.id() + " collided with " + other.id());
     }
     return collide || memo;
   }, false);
@@ -114,7 +114,7 @@ function run() {
 
   _.each(actors, function (element) {
     element.draw(cxt);
-    log.log(element.id + ": " + element.x + " " + element.y);
+    log.log(element.id() + ": " + element.x() + " " + element.y());
   });
 
   currTime = Date.now();

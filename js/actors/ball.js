@@ -15,83 +15,87 @@ function drawCircle(cxt, x, y, radius, color) {
           y * radius * 2 + radius,
           radius, 0, Math.PI * 2, true);
 
-  cxt.closePath();
-  cxt.fill();
+          cxt.closePath();
+          cxt.fill();
 }
 
 function Ball(id, x, y, radius, color) {
-  this.id = id;
+  var _id = id,
+      _radius = radius || 16,
+      _x = x,
+      _y = y,
+      _oldX = x,
+      _oldY = y,
+      _actInterval = 1000, // in ms
+      _acted = Date.now(),
+      _color = color || "#000000";
 
-  this.radius = radius || 16;
-
-  this.x = x;
-  this.y = y;
-
-  this.oldX = x;
-  this.oldY = y;
-
-  // in ms
-  this.actInterval = 1000;
-
-  this.acted = Date.now();
-
-  if (this.x < 0) {
-    this.x = 0;
+  if (_x < 0) {
+    _x = 0;
   }
 
-  if (this.x > screen.cols) {
-    this.x = screen.cols;
+  if (_x > screen.cols) {
+    _x = screen.cols;
   }
 
-  if (this.y < 0) {
-    this.y = 0;
+  if (_y < 0) {
+    _y = 0;
   }
-  if (this.y > screen.rows) {
-    this.y = screen.rows;
+  if (_y > screen.rows) {
+    _y = screen.rows;
   }
 
-  this.color = color || "#000000";
+  return {
+    draw: function (cxt) {
+      drawCircle(cxt, _x, _y, _radius, _color);
+    },
 
-  this.draw = function (cxt) {
-    drawCircle(cxt, this.x, this.y, this.radius, this.color);
-  };
+    collide: function (actor) {
+      return defaultCollision(this, actor);
+    },
 
-  this.collide = function (actor) {
-    return defaultCollision(this, actor);
-  };
+    rewind: function () {
+      _x = _oldX;
+      _y = _oldY;
+    },
 
-  this.rewind = function () {
-    this.x = this.oldX;
-    this.y = this.oldY;
-  };
+    act: function (time) {
+      if ((time - _acted) < _actInterval) {
+        return;
+      }
+      _acted = time;
+      _oldX = _x;
+      _oldY = _y;
+      switch (randomDirection()) {
+        case -1:
+          break;
 
-  this.act = function (time) {
-    if ((time - this.acted) < this.actInterval) {
-      return;
-    }
-    this.acted = time;
-    this.oldX = this.x;
-    this.oldY = this.y;
-    switch (randomDirection()) {
-      case -1:
+        case 0:
+          _y = _y + 1;
         break;
 
-      case 0:
-        this.y = this.y + 1;
-      break;
+        case 1:
+          _x = _x + 1;
+        break;
 
-      case 1:
-        this.x = this.x + 1;
-      break;
+        case 2:
+          _y = _y - 1;
+        break;
 
-      case 2:
-        this.y = this.y - 1;
-      break;
-
-      case 3:
-        this.x = this.x - 1;
-      break;
-    }
+        case 3:
+          _x = _x - 1;
+        break;
+      }
+    },
+    id: function () {
+      return _id;
+    },
+    x: function () {
+      return _x;
+    },
+    y: function () {
+      return _y;
+    },
   };
 }
 

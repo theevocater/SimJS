@@ -1,24 +1,26 @@
 "use strict";
 
 function defaultCollision(a, b) {
-  return a != b && a.x === b.x && a.y === b.y;
+  return a != b && a.x() === b.x() && a.y() === b.y();
 }
 
 // idk how to do real inheritence so a template will be fine too
 function Actor(id) {
-  this.id = id;
+  var _id = id;
 
-  this.draw = function (cxt) {
-  };
+  return {
+    draw: function (cxt) {
+    },
 
-  this.collide = function (actor) {
-    return defaultCollision(this, actor);
-  };
+    collide: function (actor) {
+      return defaultCollision(this, actor);
+    },
 
-  this.rewind = function () {
-  };
+    rewind: function () {
+    },
 
-  this.act = function (time) {
+    act: function (time) {
+    },
   };
 }
 

@@ -2,31 +2,37 @@
 
 // idk how to do real inheritence so a template will be fine too
 function Wall(id, x, y, width, height, color) {
-  this.id = id;
+  var _id = id,
+      _x = x,
+      _y = y,
+      _color = color || "#000000";
 
-  this.x = x;
-  this.y = y;
+  return {
+    draw: function (cxt) {
+      cxt.fillStyle = _color;
+      cxt.fillRect(_x * screen.grid_width, _y * screen.grid_height, width, height);
+    },
 
-  this.width = width;
-  this.height = height;
+    collide: function (actor) {
+      return defaultCollision(this, actor);
+    },
 
-  this.color = color || "#000000";
+    // walls don't do anything
+    rewind: function () {
+    },
 
-  this.draw = function (cxt) {
-    cxt.fillStyle = this.color;
-    cxt.fillRect(this.x * screen.grid_width, this.y * screen.grid_height, this.width, this.height);
-  };
-
-  this.collide = function (actor) {
-    return defaultCollision(this, actor);
-  };
-
-  // walls don't do anything
-  this.rewind = function () {
-  };
-
-  // walls don't do anything
-  this.act = function (time) {
+    // walls don't do anything
+    act: function (time) {
+    },
+    id: function () {
+      return _id;
+    },
+    x: function () {
+      return _x;
+    },
+    y: function () {
+      return _y;
+    },
   };
 }
 

@@ -10,80 +10,84 @@ function drawEnemy(cxt, image, x, y, height, width) {
 }
 
 function Enemy(id, x, y, height, width, image) {
-  this.id = id;
+  var _id = id,
+  _image = new Image(),
+  _x = x,
+  _y = y,
+  _oldX = x,
+  _oldY = y,
+  _actInterval = 1000, // in ms
+  _acted = Date.now();
 
-  this.image = new Image();
-  this.image.src = image;
+  _image.src = image;
 
-  this.x = x;
-  this.y = y;
-
-  this.height = height;
-  this.width = width;
-
-  this.oldX = x;
-  this.oldY = y;
-
-  // in ms
-  this.actInterval = 1000;
-
-  this.acted = Date.now();
-
-  if (this.x < 0) {
-    this.x = 0;
+  if (_x < 0) {
+    _x = 0;
   }
 
-  if (this.x > screen.cols) {
-    this.x = screen.cols;
+  if (_x > screen.cols) {
+    _x = screen.cols;
   }
 
-  if (this.y < 0) {
-    this.y = 0;
-  }
-  if (this.y > screen.rows) {
-    this.y = screen.rows;
+  if (_y < 0) {
+    _y = 0;
   }
 
-  this.draw = function (cxt) {
-    drawEnemy(cxt, this.image, this.x, this.y, this.height, this.width);
-  };
+  if (_y > screen.rows) {
+    _y = screen.rows;
+  }
 
-  this.collide = function (actor) {
-    return defaultCollision(this, actor);
-  };
+  return {
+    draw: function (cxt) {
+      drawEnemy(cxt, _image, _x, _y, height, width);
+    },
 
-  this.rewind = function () {
-    this.x = this.oldX;
-    this.y = this.oldY;
-  };
+    collide: function (actor) {
+      return defaultCollision(this, actor);
+    },
 
-  this.act = function (time) {
-    if ((time - this.acted) < this.actInterval) {
-      return;
-    }
-    this.acted = time;
-    this.oldX = this.x;
-    this.oldY = this.y;
-    switch (randomDirection()) {
-      case -1:
+    rewind: function () {
+      _x = _oldX;
+      _y = _oldY;
+    },
+
+    act: function (time) {
+      if ((time - _acted) < _actInterval) {
+        return;
+      }
+      _acted = time;
+      _oldX = _x;
+      _oldY = _y;
+      switch (randomDirection()) {
+        case -1:
+          break;
+
+        case 0:
+          _y = _y + 1;
         break;
 
-      case 0:
-        this.y = this.y + 1;
-      break;
+        case 1:
+          _x = _x + 1;
+        break;
 
-      case 1:
-        this.x = this.x + 1;
-      break;
+        case 2:
+          _y = _y - 1;
+        break;
 
-      case 2:
-        this.y = this.y - 1;
-      break;
-
-      case 3:
-        this.x = this.x - 1;
-      break;
-    }
+        case 3:
+          _x = _x - 1;
+        break;
+      }
+    },
+    id: function () {
+      return _id;
+    },
+    x: function () {
+      return _x;
+    },
+    y: function () {
+      return _y;
+    },
   };
 }
 

@@ -1,7 +1,8 @@
 Making a little tile based game thing.
 
 # TODO #
-* Sprites
-* A player
 * more actors
 * health
+
+## Thanks ##
+Cass [@giantspatula](http://twitter.com/giantspatula) for sprites

@@ -23,74 +23,89 @@ var walls = null;
 var running = true;
 
 function Screen(canvas) {
-  // need to blow up here.
-  this.canvas = canvas || console.log("warn: unable to init canvas");
-  this.grid_height = 32;
-  this.grid_width = 32;
-  this.cols = 32;
-  this.rows = 20;
-  this.width = this.grid_width * this.cols + 0;
-  this.height = this.grid_height * this.rows + 0;
-  this.canvas.width = this.width;
-  this.canvas.height = this.height;
-  this.clear = function (cxt) {
-    cxt = cxt || screen.canvas.getContext("2d");
-    cxt.fillStyle = "#FFFFFF";
-    cxt.fillRect(0, 0, this.width, this.height);
-  };
+  var _canvas = canvas || console.log("warn: unable to init canvas"),
+      _grid_height = 32,
+      _grid_width = 32,
+      _cols = 32,
+      _rows = 20,
+      _width = _grid_width * _cols + 0,
+      _height = _grid_height * _rows + 0,
+      _grid = [];
 
-  this.drawGrid = function (cxt) {
-    var i;
-    cxt = cxt || screen.canvas.getContext("2d");
-    for (i = 0; i < this.rows; i += 1) {
-      for (j = 0; j < this.cols; j += 1) {
-        this.grid[i][j].draw(cxt);
-      }
-    }
-
-    for (i = 0; i <= this.cols; i += 1) {
-      cxt.strokeStyle = "#000000";
-      cxt.beginPath();
-      cxt.moveTo(i * this.grid_width, 0);
-      cxt.lineTo(i * this.grid_width, this.height);
-      cxt.closePath();
-      cxt.stroke();
-    }
-
-    for (i = 0; i <= this.rows; i += 1) {
-      cxt.strokeStyle = "#000000";
-      cxt.beginPath();
-      cxt.moveTo(0, i * this.grid_height);
-      cxt.lineTo(this.width, i * this.grid_height);
-      cxt.closePath();
-      cxt.stroke();
-    }
-  };
-
-  this.grid = [];
+  _canvas.width = _width;
+  _canvas.height = _height;
 
   var i,j;
-  for (i = 0; i < this.rows; i += 1) {
-    this.grid.push([]);
-    for (j = 0; j < this.cols; j += 1) {
-      this.grid[i][j] = new Tile(newId(), j, i,
-                                 this.grid_height, this.grid_width, "/sprites/tile.png");
+
+  for (i = 0; i < _cols; i += 1) {
+    _grid.push([]);
+    for (j = 0; j < _rows; j += 1) {
+      _grid[i].push(new Tile(newId(), i, j, _grid_height, _grid_width, "/sprites/tile.png"));
     }
   }
 
-  this.put = function (actor) {
-    this.grid[actor.x][actor.y].actor = actor;
-  }
+  return {
+    clear: function (cxt) {
+      cxt = cxt || _canvas.getContext("2d");
+      cxt.fillStyle = "#FFFFFF";
+      cxt.fillRect(0, 0, _width, _height);
+    },
 
-  this.pause = function () {
-    var cxt = screen.canvas.getContext("2d");
-    cxt.fillStyle = "#000000";
-    cxt.fillRect(screen.width / 4.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
-    cxt.fillRect(7.0 * screen.width / 12.0, screen.height / 4.0, screen.width / 6.0, screen.height / 2.0);
-  };
+    drawGrid: function (cxt) {
+      var i;
+      cxt = cxt || _canvas.getContext("2d");
+      for (i = 0; i < _cols; i += 1) {
+        for (j = 0; j < _rows; j += 1) {
+          _grid[i][j].draw(cxt);
+        }
+      }
 
-  this.getContext = function () {
-    return screen.canvas.getContext("2d");
+      for (i = 0; i <= _cols; i += 1) {
+        cxt.strokeStyle = "#000000";
+        cxt.beginPath();
+        cxt.moveTo(i * _grid_width, 0);
+        cxt.lineTo(i * _grid_width, _height);
+        cxt.closePath();
+        cxt.stroke();
+      }
+
+      for (i = 0; i <= _rows; i += 1) {
+        cxt.strokeStyle = "#000000";
+        cxt.beginPath();
+        cxt.moveTo(0, i * _grid_height);
+        cxt.lineTo(_width, i * _grid_height);
+        cxt.closePath();
+        cxt.stroke();
+      }
+    },
+
+    // TODO might need to make this create the actual objects? im not sure.
+    // maybe add a createAt?
+    put: function (actor) {
+      var x = actor.x(),
+          y = actor.y();
+
+      if (x < 0 || x > _rows || y < 0 || y > _cols)
+        return false;
+
+      _grid[x][y].actor = actor;
+      return true;
+    },
+
+    get: function(x, y) {
+      return _grid[x][y].actor;
+    },
+
+    pause: function () {
+      var cxt = _canvas.getContext("2d");
+      cxt.fillStyle = "#000000";
+      cxt.fillRect(_width / 4.0, _height / 4.0, _width / 6.0, _height / 2.0);
+      cxt.fillRect(7.0 * _width / 12.0, _height / 4.0, _width / 6.0, _height / 2.0);
+    },
+
+    getContext: function () {
+      return _canvas.getContext("2d");
+    },
   };
 }
 
@@ -175,6 +190,7 @@ function start() {
   }
 }
 
+// TODO: push conversions into the screen class
 function canvasClick(e) {
   var x = Math.floor((e.pageX - this.offsetLeft) / screen.grid_width);
   var y = Math.floor((e.pageY - this.offsetTop) / screen.grid_height);
@@ -183,6 +199,7 @@ function canvasClick(e) {
 
 var adder = null;
 
+// TODO: use screen.put()
 function addEnemy(e) {
   adder = function (id, x, y) {
     return new Enemy(id, x, y,
@@ -191,6 +208,7 @@ function addEnemy(e) {
   }
 }
 
+// TODO: remove this in favor of using screen.put()
 function addWall(e) {
   adder = function (id, x, y) {
     return new Wall(id, x, y, screen.grid_width, screen.grid_height);
@@ -239,6 +257,7 @@ $(document).ready(function () {
   screen = new Screen($("#myCanvas")[0]);
   walls = new SimWalls(newId());
 
+  // TODO screen.put()
   var num = Math.floor(Math.random() * 2);
   player = new Player(newId(), 0, 0,
                       screen.grid_height, screen.grid_width,

@@ -21,22 +21,6 @@ function Enemy(id, x, y, height, width, image) {
 
   _image.src = image;
 
-  if (_x < 0) {
-    _x = 0;
-  }
-
-  if (_x > screen.cols) {
-    _x = screen.cols;
-  }
-
-  if (_y < 0) {
-    _y = 0;
-  }
-
-  if (_y > screen.rows) {
-    _y = screen.rows;
-  }
-
   return {
     draw: function (cxt) {
       drawEnemy(cxt, _image, _x, _y, height, width);

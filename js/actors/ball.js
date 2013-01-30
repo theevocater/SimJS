@@ -30,21 +30,6 @@ function Ball(id, x, y, radius, color) {
       _acted = Date.now(),
       _color = color || "#000000";
 
-  if (_x < 0) {
-    _x = 0;
-  }
-
-  if (_x > screen.cols) {
-    _x = screen.cols;
-  }
-
-  if (_y < 0) {
-    _y = 0;
-  }
-  if (_y > screen.rows) {
-    _y = screen.rows;
-  }
-
   return {
     draw: function (cxt) {
       drawCircle(cxt, _x, _y, _radius, _color);

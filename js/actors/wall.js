@@ -10,7 +10,7 @@ function Wall(id, x, y, width, height, color) {
   return {
     draw: function (cxt) {
       cxt.fillStyle = _color;
-      cxt.fillRect(_x * screen.grid_width, _y * screen.grid_height, width, height);
+      cxt.fillRect(_x * width, _y * height, width, height);
     },
 
     collide: function (actor) {

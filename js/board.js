@@ -26,23 +26,25 @@ function Board(canvas) {
     grid_height: 32,
     grid_width: 32,
     actors: [],
+    acted: [],
     player: null,
 
-    clear: function (cxt) {
-      cxt = cxt || _canvas.getContext("2d");
+    redraw: function () {
+      var i,
+          cxt = _canvas.getContext("2d");
+
+      // clear screen
       cxt.fillStyle = "#FFFFFF";
       cxt.fillRect(0, 0, _width, _height);
-    },
 
-    drawGrid: function (cxt) {
-      var i;
-      cxt = cxt || _canvas.getContext("2d");
+      // draw every tile/actor
       for (i = 0; i < _cols; i += 1) {
         for (j = 0; j < _rows; j += 1) {
           _grid[i][j].draw(cxt);
         }
       }
 
+      // draw grid
       for (i = 0; i <= _cols; i += 1) {
         cxt.strokeStyle = "#000000";
         cxt.beginPath();
@@ -62,30 +64,61 @@ function Board(canvas) {
       }
     },
 
-    // TODO might need to make this create the actual objects? im not sure.
-    // maybe add a createAt?
-    move: function (actor) {
-      var x = actor.x(),
-          y = actor.y();
+    drawLatest: function () {
+      var cxt = _canvas.getContext("2d");
+      if (this.acted.length > 0) {
+        _.each(this.acted, function (element) {
+          element.draw(cxt);
+        });
+        this.acted = [];
+      }
+    },
 
-      if (x < 0 || x > _rows || y < 0 || y > _cols)
+    // attempt to move actor to x,y
+    move: function (actor, x, y) {
+      var ax = actor.x(),
+          ay = actor.y();
+
+      // didn't move, so... yeah
+      if (x === ax && y === ay)
+        return true;
+
+      // make sure its in bounds
+      if (x < 0 || x >= _cols || y < 0 || y >= _rows)
         return false;
 
-      _grid[x][y].actor = actor;
-      return true;
+      // check collision
+      // TODO still need to think this through, not sure if collisions should check
+      // both ways, just one way in, hmmm
+      if (_grid[x][y].actor != null) {
+        console.log(actor.id() + " collided with " + _grid[x][y].actor.id());
+        return false;
+      } else {
+        // remove from old spot and redraw
+        _grid[ax][ay].actor = null;
+        this.acted.push(_grid[ax][ay]);
+
+        // move to new spot and draw
+        _grid[x][y].actor = actor;
+        this.acted.push(_grid[x][y]);
+        return true;
+      }
+
+      return false;
     },
 
     add: function(actor) {
       var x = actor.x(),
           y = actor.y();
 
-      if ( x < 0 || x > _rows || y < 0 || y > _cols )
+      if (x < 0 || x >= _cols || y < 0 || y >= _rows)
         return false;
 
       this.actors.push(actor);
       _grid[x][y].actor = actor;
+      this.acted.push(_grid[x][y]);
       return true;
-    }, 
+    },
 
     get: function(x, y) {
       return _grid[x][y].actor;
@@ -100,6 +133,16 @@ function Board(canvas) {
 
     getContext: function () {
       return _canvas.getContext("2d");
+    },
+
+    // try to make all the actors act
+    act: function (time) {
+      _.each(this.actors, function (element) {
+        var x = element.x(),
+            y = element.y();
+        element.act(time, this)
+        log.log(element.id() + ": " + element.x() + " " + element.y());
+      }, this);
     },
   };
 }

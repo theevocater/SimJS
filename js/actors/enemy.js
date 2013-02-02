@@ -14,8 +14,6 @@ function Enemy(id, x, y, height, width, image) {
   _image = new Image(),
   _x = x,
   _y = y,
-  _oldX = x,
-  _oldY = y,
   _actInterval = 1000, // in ms
   _acted = Date.now();
 
@@ -30,39 +28,48 @@ function Enemy(id, x, y, height, width, image) {
       return defaultCollision(this, actor);
     },
 
-    rewind: function () {
-      _x = _oldX;
-      _y = _oldY;
-    },
+    act: function (time, board) {
+      // save the old position
+      var x = _x,
+          y = _y;
 
-    act: function (time) {
+      // check if its time to move
       if ((time - _acted) < _actInterval) {
         return;
       }
+
       _acted = time;
-      _oldX = _x;
-      _oldY = _y;
+
       switch (randomDirection()) {
         case -1:
           break;
 
         case 0:
-          _y = _y + 1;
+          y = y + 1;
         break;
 
         case 1:
-          _x = _x + 1;
+          x = x + 1;
         break;
 
         case 2:
-          _y = _y - 1;
+          y = y - 1;
         break;
 
         case 3:
-          _x = _x - 1;
+          x = x - 1;
         break;
       }
+
+      // attempt to move, will return false if the move is illegal.
+      // TODO: not sure this logic belongs here
+      if (board.move(this, x, y)) {
+        _x = x;
+        _y = y;
+      }
     },
+
+    // getters
     id: function () {
       return _id;
     },

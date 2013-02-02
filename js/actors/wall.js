@@ -18,12 +18,10 @@ function Wall(id, x, y, width, height, color) {
     },
 
     // walls don't do anything
-    rewind: function () {
+    act: function (time, board) {
+      return true;
     },
 
-    // walls don't do anything
-    act: function (time) {
-    },
     id: function () {
       return _id;
     },

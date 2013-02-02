@@ -16,10 +16,9 @@ function Actor(id) {
       return defaultCollision(this, actor);
     },
 
-    rewind: function () {
-    },
-
-    act: function (time) {
+    // not sure about passing in the board, but such is the way
+    act: function (time, board) {
+      return true;
     },
   };
 }

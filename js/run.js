@@ -5,6 +5,10 @@ var board = null;
 
 var log = null;
 
+var time = 0;
+
+var running = true;
+
 // yeah.
 var superUniqueUUID = 0;
 
@@ -13,10 +17,6 @@ function newId() {
   superUniqueUUID += 1;
   return id;
 }
-
-
-var running = true;
-
 
 function pause() {
   if (running) {
@@ -30,31 +30,18 @@ function pause() {
   }
 }
 
-var time = 0;
-
 function run() {
-  var i, cxt, currTime;
+  var i, currTime;
+
   if (!running) {
     return;
   }
 
-  cxt = board.getContext();
   log.clearLog();
-  board.clear(cxt);
-  board.drawGrid(cxt);
-
-  _.each(board.actors, function (element) {
-    log.log(element.id() + ": " + element.x() + " " + element.y());
-  });
+  board.drawLatest();
 
   currTime = Date.now();
-  _.each(board.actors, function (element) {
-    element.act(currTime);
-    if (detectCollision(element)) {
-      element.rewind();
-    }
-  });
-
+  board.act(currTime);
   time = Date.now();
 
   setTimeout(run, 16);
@@ -104,7 +91,7 @@ function add(x, y) {
 
 // TODO this is broken
 function clear() {
-  board.actors = [board.player];
+  board.clear();
   log.clearLog();
 }
 
@@ -127,8 +114,10 @@ $(document).ready(function () {
 
   // set up game world
   board = new Board($("#myCanvas")[0]);
+  board.redraw();
 
   var num = Math.floor(Math.random() * 2);
+
   board.player = new Player(newId(), 0, 0,
                       board.grid_height, board.grid_width,
                       "/sprites/redoctober" + num + ".png");

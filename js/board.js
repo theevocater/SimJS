@@ -90,7 +90,12 @@ function Board(canvas) {
       // check collision
       // TODO still need to think this through, not sure if collisions should check
       // both ways, just one way in, hmmm
-      if (_grid[x][y].actor != null) {
+      // this doesn't work because this actor hasn't moved to that tile so it
+      // doesn't yet occupy that space. hmmmmmmmmmmmmmmmmmmmmm
+      // do we maybe just want to define a rock paper style collisions? like,
+      // collide references some list of objects that it is blocked/will block
+      // maybe? 
+      if (_grid[x][y].actor != null) {// && actor.collide(_grid[x][y].actor)) {
         console.log(actor.id() + " collided with " + _grid[x][y].actor.id());
         return false;
       } else {

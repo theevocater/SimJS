@@ -5,33 +5,25 @@ function randomDirection() {
   return Math.floor(Math.random() * 5) - 1;
 }
 
-function drawEnemy(cxt, image, x, y, height, width) {
-  cxt.drawImage(image, x*height, y*width, height, width);
-}
-
 function Enemy(id, x, y, height, width, image) {
-  var _id = id,
-  _image = new Image(),
+  var _image = new Image(),
   _x = x,
   _y = y,
   _actInterval = 1000, // in ms
-  _acted = Date.now();
+  _acted = Date.now(),
+  i;
 
   _image.src = image;
 
-  return {
+  return Actor(id).compose({
     draw: function (cxt) {
-      drawEnemy(cxt, _image, _x, _y, height, width);
-    },
-
-    collide: function (actor) {
-      return defaultCollision(this, actor);
+      cxt.drawImage(_image, _x * height, _y * width, height, width);
     },
 
     act: function (time, board) {
       // save the old position
       var x = _x,
-          y = _y;
+      y = _y;
 
       // check if its time to move
       if ((time - _acted) < _actInterval) {
@@ -70,15 +62,13 @@ function Enemy(id, x, y, height, width, image) {
     },
 
     // getters
-    id: function () {
-      return _id;
-    },
     x: function () {
       return _x;
     },
+
     y: function () {
       return _y;
     },
-  };
+  });
 }
 

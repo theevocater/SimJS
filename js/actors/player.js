@@ -1,31 +1,28 @@
 "use strict";
 
 function Player(id, x, y, height, width, image) {
-  var _id = id,
-      _image = new Image(),
+  var _image = new Image(),
       _x = x,
-      _y = y;
+      _y = y,
+      i;
 
   _image.src = image;
 
-  return {
+  return Actor(id).compose({
     draw: function (cxt) {
       cxt.drawImage(_image, _x * height, _y * width,
                     height, width);
     },
 
-    collide: function (actor) {
-      return defaultCollision(this, actor);
-    },
-
     // the player doesn't take automatic actions
     // TODO this should remove one from queue, try to do it
     // maybe it should dump queue if its illegal?
-    act: function (time, board) {
-      return true;
-    },
+    //act: function (time, board) {
+      //return true;
+    //},
 
     // TODO this should queue actions
+    // these still need to work w/ the board so pc appears to not move
     left: function () {
       _x = _x - 1;
     },
@@ -42,15 +39,13 @@ function Player(id, x, y, height, width, image) {
       _y = _y + 1;
     },
 
-    id: function () {
-      return _id;
-    },
     x: function () {
       return _x;
     },
+
     y: function () {
       return _y;
     },
-  };
+  });
 }
 

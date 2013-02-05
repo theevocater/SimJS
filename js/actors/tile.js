@@ -1,6 +1,8 @@
 "use strict";
 
 // takes in grid relative coords
+// I think this is not an actor. maybe move to the board "module"?
+// i think i get that pattern better now
 function Tile(id, x, y, height, width, image) {
   var _image = new Image();
 

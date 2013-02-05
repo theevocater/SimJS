@@ -1,8 +1,6 @@
 "use strict";
 
 // globals
-var board = null;
-
 var log = null;
 
 var time = 0;
@@ -113,8 +111,7 @@ $(document).ready(function () {
   $("canvas").click(canvasClick);
 
   // set up game world
-  board = new Board($("#myCanvas")[0]);
-  board.redraw();
+  board.init($("#myCanvas")[0]);
 
   var num = Math.floor(Math.random() * 2);
 

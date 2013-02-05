@@ -1,7 +1,7 @@
 "use strict";
 
-function Board(canvas) {
-  var _canvas = canvas || console.log("warn: unable to init canvas"),
+var board = (function () {
+  var _canvas = null,
       _grid_height = 32,
       _grid_width = 32,
       _cols = 32,
@@ -10,15 +10,30 @@ function Board(canvas) {
       _height = _grid_height * _rows + 0,
       _grid = [];
 
-  _canvas.width = _width;
-  _canvas.height = _height;
+  // takes in grid relative coords
+  // I think this is not an actor. maybe move to the board "module"?
+  // i think i get that pattern better now
+  function Tile(id, x, y, height, width, image) {
+    var _image = new Image();
 
-  var i,j;
+    _image.src = image;
 
-  for (i = 0; i < _cols; i += 1) {
-    _grid.push([]);
-    for (j = 0; j < _rows; j += 1) {
-      _grid[i].push(new Tile(newId(), i, j, _grid_height, _grid_width, "/sprites/tile.png"));
+    return {
+      actor:  null, // keeps the actor currently at its locale
+      draw: function (cxt) {
+        cxt.drawImage(_image, x * height, y * width,
+                      height, width);
+                      if (this.actor !== null) {
+                        this.actor.draw(cxt)
+                      }
+      },
+
+      collide: function(actor) {
+      },
+
+      act: function (time, board) {
+        return true;
+      },
     }
   }
 
@@ -29,8 +44,26 @@ function Board(canvas) {
     acted: [],
     player: null,
 
+    // Must call init first or crashiness will follow
+    init: function (canvas) {
+      _canvas = canvas;
+      _canvas.width = _width;
+      _canvas.height = _height;
+
+      var i,j;
+
+      for (i = 0; i < _cols; i += 1) {
+        _grid.push([]);
+        for (j = 0; j < _rows; j += 1) {
+          _grid[i].push(new Tile(newId(), i, j, _grid_height, _grid_width, "/sprites/tile.png"));
+        }
+      }
+
+      this.redraw();
+    },
+
     redraw: function () {
-      var i,
+      var i, j,
           cxt = _canvas.getContext("2d");
 
       // clear screen
@@ -150,5 +183,5 @@ function Board(canvas) {
       }, this);
     },
   };
-}
+}());
 

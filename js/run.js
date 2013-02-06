@@ -119,26 +119,27 @@ $(document).ready(function () {
   // TODO: make sure its not rejected
   board.add(board.player);
 
-  KeyboardJS.on("w", function () {
-    board.player.up();
-    moved();
-  });
+  require(["keyboardjs/keyboard"], function (KeyboardJS) {
+    KeyboardJS.on("w", function () {
+      board.player.up();
+      moved();
+    });
 
-  KeyboardJS.on("s", function () {
-    board.player.down();
-    moved();
-  });
+    KeyboardJS.on("s", function () {
+      board.player.down();
+      moved();
+    });
 
-  KeyboardJS.on("a", function () {
-    board.player.left();
-    moved();
-  });
+    KeyboardJS.on("a", function () {
+      board.player.left();
+      moved();
+    });
 
-  KeyboardJS.on("d", function () {
-    board.player.right();
-    moved();
+    KeyboardJS.on("d", function () {
+      board.player.right();
+      moved();
+    });
   });
-
   // TODO if no log element, replace with donothing logger
   log.init($("#log"));
 

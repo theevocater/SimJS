@@ -91,13 +91,6 @@ function clear() {
   log.clearLog();
 }
 
-function moved() {
-  if(detectCollision(board.player)) {
-    board.player.rewind();
-    return;
-  }
-}
-
 $(document).ready(function () {
   // set up buttons
   $("#pause").click(pause);
@@ -122,22 +115,18 @@ $(document).ready(function () {
   require(["keyboardjs/keyboard"], function (KeyboardJS) {
     KeyboardJS.on("w", function () {
       board.player.up();
-      moved();
     });
 
     KeyboardJS.on("s", function () {
       board.player.down();
-      moved();
     });
 
     KeyboardJS.on("a", function () {
       board.player.left();
-      moved();
     });
 
     KeyboardJS.on("d", function () {
       board.player.right();
-      moved();
     });
   });
   // TODO if no log element, replace with donothing logger

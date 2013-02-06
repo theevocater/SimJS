@@ -8,6 +8,13 @@ function Player(id, x, y, height, width, image) {
 
   _image.src = image;
 
+  function move(player,x,y) {
+    if (board.move(player, x, y)) {
+      _x = x;
+      _y = y;
+    }
+  }
+
   return Actor(id).compose({
     draw: function (cxt) {
       cxt.drawImage(_image, _x * height, _y * width,
@@ -22,21 +29,20 @@ function Player(id, x, y, height, width, image) {
     //},
 
     // TODO this should queue actions
-    // these still need to work w/ the board so pc appears to not move
     left: function () {
-      _x = _x - 1;
+      move(this, _x - 1, _y);
     },
 
     right: function () {
-      _x = _x + 1;
+      move(this, _x + 1, _y);
     },
 
     up: function () {
-      _y = _y - 1;
+      move(this, _x, _y - 1);
     },
 
     down: function () {
-      _y = _y + 1;
+      move(this, _x, _y + 1);
     },
 
     x: function () {

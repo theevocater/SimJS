@@ -1,8 +1,6 @@
 "use strict";
 
 // globals
-var log = null;
-
 var time = 0;
 
 var running = true;
@@ -140,8 +138,9 @@ $(document).ready(function () {
     board.player.right();
     moved();
   });
+
   // TODO if no log element, replace with donothing logger
-  log = new Log($("#log"));
+  log.init($("#log"));
 
   // start simulation
   run();

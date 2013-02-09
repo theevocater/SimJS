@@ -1,20 +1,20 @@
 "use strict";
 
-define(function () {
+var sprites = (function () {
   var images = {
-      enemy: ["/sprites/cats.png"],
-      player: ["/sprites/redoctober0.png", "/sprites/redoctober1.png"],
-      wall: ["/sprites/tile.png"],
-    },
-    i;
+    enemy: ["/sprites/cats.png"],
+    player: ["/sprites/redoctober0.png", "/sprites/redoctober1.png"],
+    wall: ["/sprites/tile.png"],
+  };
 
-  for (i in images) {
-    images[i] = _.map(images[i], function (string) {
+  _.each(images, function (arr, key, obj) {
+    obj[key] = _.map(arr, function (string, index) {
       var img = new Image();
       img.src = string;
       return img;
     });
-  }
+  });
+  console.log(images);
 
   return images;
-});
+}());

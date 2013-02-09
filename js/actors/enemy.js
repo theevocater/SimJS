@@ -6,14 +6,12 @@ function randomDirection() {
 }
 
 function Enemy(id, x, y, height, width, image) {
-  var _image = new Image(),
+  var _image = sprites.enemy[0],
   _x = x,
   _y = y,
   _actInterval = 1000, // in ms
   _acted = Date.now(),
   i;
-
-  _image.src = image;
 
   return Actor(id).compose({
     draw: function (cxt) {

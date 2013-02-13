@@ -13,8 +13,8 @@ define(["actor"], function (Actor) {
     //return true;
     //},
 
-    move: function (player, x, y) {
-      if (board.move(player, x, y)) {
+    move: function (x, y) {
+      if (board.move(this, x, y)) {
         this.x = x;
         this.y = y;
       }
@@ -22,19 +22,19 @@ define(["actor"], function (Actor) {
 
     // TODO this should queue actions
     left: function () {
-      move(this, this.x - 1, this.y);
+      this.move(this.x - 1, this.y);
     },
 
     right: function () {
-      move(this, this.x + 1, this.y);
+      this.move(this.x + 1, this.y);
     },
 
     up: function () {
-      move(this, this.x, this.y - 1);
+      this.move(this.x, this.y - 1);
     },
 
     down: function () {
-      move(this, this.x, this.y + 1);
+      this.move(this.x, this.y + 1);
     },
   });
 

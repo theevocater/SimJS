@@ -8,7 +8,8 @@ define(["id"], function (newId) {
       _rows = 20,
       _width = _grid_width * _cols + 0,
       _height = _grid_height * _rows + 0,
-      _grid = [];
+      _grid = [],
+      _log;
 
   function Tile(id, x, y, height, width, image) {
     var _image = new Image();
@@ -35,10 +36,11 @@ define(["id"], function (newId) {
     player: null,
 
     // Must call init first or crashiness will follow
-    init: function (canvas) {
+    init: function (canvas, log) {
       _canvas = canvas;
       _canvas.width = _width;
       _canvas.height = _height;
+      _log = log;
 
       var i,j;
 
@@ -169,7 +171,9 @@ define(["id"], function (newId) {
         var x = element.x,
             y = element.y;
         element.act(time, this)
-        log.log(element.id + ": " + element.x + " " + element.y);
+        if (_log) {
+          _log.log(element.id + ": " + element.x + " " + element.y);
+        }
       }, this);
     },
   };

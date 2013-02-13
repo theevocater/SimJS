@@ -1,6 +1,6 @@
 "use strict";
 
-define(["board", "player", "enemy", "wall", "id"], function (board, Player, Enemy, Wall, newId) {
+define(["board", "player", "enemy", "wall", "id", "log"], function (board, Player, Enemy, Wall, newId, log) {
 
 // globals
 var time = 0;
@@ -95,7 +95,7 @@ $(document).ready(function () {
   $("canvas").click(canvasClick);
 
   // set up game world
-  board.init($("#myCanvas")[0]);
+  board.init($("#myCanvas")[0], log);
 
   var num = Math.floor(Math.random() * 2);
 

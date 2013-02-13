@@ -1,7 +1,9 @@
+"use strict";
+
 // TODO
 // we should probably programatically add the logging element somehow 
 // if there isn't one passed in
-var log = (function () {
+define(function () {
   var _logElem = null;
 
   return {
@@ -18,4 +20,4 @@ var log = (function () {
       _logElem.empty();
     },
   };
-}());
+});

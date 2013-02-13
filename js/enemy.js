@@ -1,34 +1,30 @@
 "use strict";
 
-// @returns [-1,4] -- [NoMove, N, E, S, W]
-function randomDirection() {
-  return Math.floor(Math.random() * 5) - 1;
-}
+define(["actor"], function (Actor) {
+  // @returns [-1,4] -- [NoMove, N, E, S, W]
+  function randomDirection() {
+    return Math.floor(Math.random() * 5) - 1;
+  }
 
-function Enemy(id, x, y, height, width, image) {
-  var _image = sprites.enemy[0],
-  _x = x,
-  _y = y,
-  _actInterval = 1000, // in ms
-  _acted = Date.now(),
-  i;
+  var Enemy = Actor.extend({
+    init: function (id, x, y, height, width) {
+      this._super(id, x, y, height, width, sprites.enemy[0]);
 
-  return Actor(id).compose({
-    draw: function (cxt) {
-      cxt.drawImage(_image, _x * height, _y * width, height, width);
+      this.actInterval = 1000; // in ms
+      this.acted = Date.now();
     },
 
     act: function (time, board) {
       // save the old position
-      var x = _x,
-      y = _y;
+      var x = this.x,
+      y = this.y;
 
       // check if its time to move
-      if ((time - _acted) < _actInterval) {
+      if ((time - this.acted) < this.actInterval) {
         return;
       }
 
-      _acted = time;
+      this.acted = time;
 
       switch (randomDirection()) {
         case -1:
@@ -54,19 +50,12 @@ function Enemy(id, x, y, height, width, image) {
       // attempt to move, will return false if the move is illegal.
       // TODO: not sure this logic belongs here
       if (board.move(this, x, y)) {
-        _x = x;
-        _y = y;
+        this.x = x;
+        this.y = y;
       }
     },
-
-    // getters
-    x: function () {
-      return _x;
-    },
-
-    y: function () {
-      return _y;
-    },
   });
-}
+
+  return Enemy;
+});
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var board = (function () {
+define(["id"], function (newId) {
   var _canvas = null,
       _grid_height = 32,
       _grid_width = 32,
@@ -23,13 +23,6 @@ var board = (function () {
                       if (this.actor !== null) {
                         this.actor.draw(cxt)
                       }
-      },
-
-      collide: function(actor) {
-      },
-
-      act: function (time, board) {
-        return true;
       },
     }
   }
@@ -106,8 +99,8 @@ var board = (function () {
 
     // attempt to move actor to x,y
     move: function (actor, x, y) {
-      var ax = actor.x(),
-          ay = actor.y();
+      var ax = actor.x,
+          ay = actor.y;
 
       // didn't move, so... yeah
       if (x === ax && y === ay)
@@ -126,7 +119,7 @@ var board = (function () {
       // collide references some list of objects that it is blocked/will block
       // maybe? 
       if (_grid[x][y].actor != null) {// && actor.collide(_grid[x][y].actor)) {
-        console.log(actor.id() + " collided with " + _grid[x][y].actor.id());
+        console.log(actor.id + " collided with " + _grid[x][y].actor.id);
         return false;
       } else {
         // remove from old spot and redraw
@@ -143,8 +136,8 @@ var board = (function () {
     },
 
     add: function(actor) {
-      var x = actor.x(),
-          y = actor.y();
+      var x = actor.x,
+          y = actor.y;
 
       if (x < 0 || x >= _cols || y < 0 || y >= _rows)
         return false;
@@ -173,12 +166,12 @@ var board = (function () {
     // try to make all the actors act
     act: function (time) {
       _.each(this.actors, function (element) {
-        var x = element.x(),
-            y = element.y();
+        var x = element.x,
+            y = element.y;
         element.act(time, this)
-        log.log(element.id() + ": " + element.x() + " " + element.y());
+        log.log(element.id + ": " + element.x + " " + element.y);
       }, this);
     },
   };
-}());
+});
 

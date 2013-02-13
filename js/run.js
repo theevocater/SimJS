@@ -1,18 +1,11 @@
 "use strict";
 
+define(["board", "player", "enemy", "wall", "id"], function (board, Player, Enemy, Wall, newId) {
+
 // globals
 var time = 0;
 
 var running = true;
-
-// yeah.
-var superUniqueUUID = 0;
-
-function newId() {
-  var id = superUniqueUUID;
-  superUniqueUUID += 1;
-  return id;
-}
 
 function pause() {
   if (running) {
@@ -108,7 +101,7 @@ $(document).ready(function () {
 
   board.player = new Player(newId(), 0, 0,
                       board.grid_height, board.grid_width,
-                      "/sprites/redoctober" + num + ".png");
+                      sprites.player[num]);
   // TODO: make sure its not rejected
   board.add(board.player);
 
@@ -136,4 +129,5 @@ $(document).ready(function () {
   run();
 });
 
+});
 // TODO exception function

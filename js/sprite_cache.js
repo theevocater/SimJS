@@ -14,7 +14,6 @@ var sprites = (function () {
       return img;
     });
   });
-  console.log(images);
 
   return images;
 }());

@@ -2,8 +2,9 @@
 
 define(["actor"], function (Actor) {
   var Player = Actor.extend({
-    init: function (id, x, y, height, width, image) {
+    init: function (id, x, y, height, width, image, board) {
       this._super(id, x, y, height, width, image);
+      this._board = board;
     },
 
     // the player doesn't take automatic actions
@@ -14,7 +15,7 @@ define(["actor"], function (Actor) {
     //},
 
     move: function (x, y) {
-      if (board.move(this, x, y)) {
+      if (this._board.move(this, x, y)) {
         this.x = x;
         this.y = y;
       }

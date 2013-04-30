@@ -101,29 +101,35 @@ $(document).ready(function () {
 
   board.player = new Player(newId(), 0, 0,
                       board.grid_height, board.grid_width,
-                      sprites.player[num]);
+                      sprites.player[num], board);
   // TODO: make sure its not rejected
   board.add(board.player);
 
+  // TODO if no log element, replace with donothing logger
+  log.init($("#log"));
+
   require(["keyboardjs/keyboard"], function (KeyboardJS) {
     KeyboardJS.on("w", function () {
+      console.log("Up");
       board.player.up();
     });
 
     KeyboardJS.on("s", function () {
+      console.log("Down");
       board.player.down();
     });
 
     KeyboardJS.on("a", function () {
+      console.log("Left");
       board.player.left();
     });
 
     KeyboardJS.on("d", function () {
+      console.log("Right");
       board.player.right();
     });
   });
-  // TODO if no log element, replace with donothing logger
-  log.init($("#log"));
+
 
   // start simulation
   run();

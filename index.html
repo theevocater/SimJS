@@ -2,22 +2,37 @@
 <html>
 <head>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
-<script data-main="js/main" src="js/require.js"></script>   
+<script>
+    var require = {
+        baseUrl: '/js',
+        paths: {
+            Crafty: '/js/lib/crafty'
+        },
+        shim: {
+            Crafty: {
+                exports: 'Crafty'
+            }
+        },
+        waitSeconds: 1,
+        deps: ["src/game"],
+        callback: function(game) {
+          game.start();
+        }
+    };
+</script>
+<script src="js/lib/require.js"></script>
 <title>JSSim</title>
 <link rel="stylesheet" href="/css/main.css" />
 </head>
 <body>
 
-<canvas id="myCanvas">
-  Your browser does not support the canvas element.
-</canvas>
-<form>
-  <input type="button" id="add_enemy" value="Add Enemy">
-  <input type="button" id="add_wall" value="Add Wall">
-  <input type="button" id="pause" value="Pause">
-  <input type="button" id="clear" value="Clear">
-</form>
-<div id="log"></div>
+<div id="cr-stage"></div>
+
+<p>Assets stolen generously from:
+<ul>
+  <li> <a href="http://tsgk.captainn.net/?p=sheetinfo&t=1328">The ShyGuy Kingdom</a> </li>
+</ul>
+</p>
  <!--github ribbon -->
 <a href="https://github.com/theevocater/SimJS">
   <img style="position: absolute; top: 0; right: 0; border: 0;"

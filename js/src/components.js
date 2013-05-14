@@ -32,13 +32,13 @@ define(["Crafty", "src/globals"], function(Crafty, Globals) {
   Crafty.c('Tree', {
     init: function() {
       this.requires('Actor, Color, Solid')
-          .color('red');
+          .color('rgb(10, 100, 10)');
     }
   });
 
   Crafty.c('PlayerCharacter', {
     init: function() {
-      this.requires('Actor, Fourway, Collision, spr_player, SpriteAnimation')
+      this.requires('Actor, Keyboard, Fourway, Collision, spr_player, SpriteAnimation')
       // These next lines define our four animations
       //  each call to .animate specifies:
       //  - the name of the animation
@@ -47,27 +47,43 @@ define(["Crafty", "src/globals"], function(Crafty, Globals) {
       //  - the number of animation frames *in addition to* the first one
       .fourway(2)
       .stopOnSolids()
+      .animate('PlayerAttackDown',  3, 12, 7)
       .animate('PlayerMovingUp',  3, 26, 10)
       .animate('PlayerMovingDown', 3, 0, 10)
       .animate('PlayerMovingLeft',  3, 51, 10);
 
+      this.attr({facing: { x: 0, y: 2 }});
 
       var animation_speed = 1;
       this.bind('NewDirection', function(data) {
         if (data.x > 0) {
           this.flip("X");
           this.animate('PlayerMovingLeft', animation_speed, -1);
+          this.setFacing(data);
         } else if (data.x < 0) {
           this.unflip("X");
           this.animate('PlayerMovingLeft', animation_speed, -1);
+          this.setFacing(data);
         } else if (data.y > 0) {
           this.animate('PlayerMovingDown', animation_speed, -1);
+          this.setFacing(data);
         } else if (data.y < 0) {
           this.animate('PlayerMovingUp', animation_speed, -1);
+          this.setFacing(data);
         } else {
           this.stop();
         }
       });
+
+      this.bind('KeyDown', function () {
+        if (this.isDown('SPACE'))
+          this.attack();
+      });
+    },
+
+    setFacing: function(data) {
+      this.attr({facing: {x: data.x, y: data.y}});
+      return this;
     },
 
     // Registers a stop-movement function to be called when
@@ -76,6 +92,19 @@ define(["Crafty", "src/globals"], function(Crafty, Globals) {
       this.onHit('Solid', this.stopMovement);
 
       return this;
+    },
+
+    attack: function() {
+      console.log("attack!");
+      if (this.facing.x > 0) {
+      } else if (this.facing.x < 0) {
+      } else if (this.facing.y > 0) {
+        this.animate('PlayerAttackDown', 10, 1);
+      } else if (this.facing.y < 0) {
+      } else {
+        console.log("Not facing?");
+        console.log(this.facing.x);
+      }
     },
 
     // Stops the movement
